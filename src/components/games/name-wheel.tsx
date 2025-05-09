@@ -29,10 +29,10 @@ interface Segment {
 const WHEEL_COLORS = [
   "hsl(0, 75%, 60%)",   // Red
   "hsl(135, 65%, 45%)", // Green
+  "hsl(60, 85%, 55%)",  // Yellow
   "hsl(220, 75%, 55%)", // Blue
   "hsl(30, 85%, 53%)",  // Orange
   "hsl(325, 75%, 58%)", // Lotus Pink (Vibrant Pink)
-  "hsl(265, 65%, 60%)", // Purple
 ];
 
 export function NameWheel() {
