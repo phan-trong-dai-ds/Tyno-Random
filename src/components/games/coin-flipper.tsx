@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Coins } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 
@@ -78,33 +77,26 @@ export function CoinFlipper() {
       </div>
 
       {results.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl">{translations.resultsTitle as string}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
+        <div className="mt-6">
+          <h2 className="text-xl font-semibold mb-3 text-foreground">{translations.resultsTitle as string}</h2>
+          <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
+            <div className="flex flex-wrap gap-3">
               {results.map((result, index) => (
-                <div
-                  key={result.id + animationKeys[result.id]}
-                  className={`animate-pop-in flex flex-col items-center justify-center p-3 border rounded-lg shadow-sm aspect-square
-                    ${result.value === "H" ? "bg-amber-400/20 border-amber-500" : "bg-slate-400/20 border-slate-500"}`}
+                <span
+                  key={result.id + (animationKeys[result.id] || 0)}
+                  className={`animate-pop-in px-3 py-1.5 rounded-md text-sm font-semibold shadow-sm
+                    ${result.value === "H" ? "bg-amber-400/30 text-amber-700 border border-amber-500/50" : "bg-slate-400/30 text-slate-700 border border-slate-500/50"}`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <span className={`text-3xl font-bold ${result.value === "H" ? "text-amber-600" : "text-slate-600"}`}>
-                    {result.value}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-1">
-                    {result.value === "H" ? translations.heads as string : translations.tails as string}
-                  </span>
-                </div>
+                  {result.value === "H" ? translations.heads as string : translations.tails as string}
+                </span>
               ))}
             </div>
-          </CardContent>
-           <CardFooter className="text-sm text-muted-foreground">
+          </div>
+          <p className="mt-4 text-sm text-muted-foreground">
             {translations.totalHeads as string}: {results.filter(r => r.value === 'H').length}, {translations.totalTails as string}: {results.filter(r => r.value === 'T').length}
-          </CardFooter>
-        </Card>
+          </p>
+        </div>
       )}
     </div>
   );
