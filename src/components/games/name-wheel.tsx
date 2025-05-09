@@ -18,7 +18,7 @@ const WHEEL_RADIUS = WHEEL_SIZE / 2 - 20;
 
 const WHEEL_COLORS = [
   "hsl(0, 75%, 60%)",   // Red
-  "hsl(120, 75%, 45%)", // Green (adjusted for better visibility)
+  "hsl(120, 75%, 45%)", // Green
   "hsl(60, 85%, 55%)",  // Yellow
   "hsl(220, 75%, 55%)", // Blue
   "hsl(30, 85%, 53%)",  // Orange
@@ -146,7 +146,7 @@ export function NameWheel() {
       const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
       setShowConfetti(true); 
-      setTimeout(() => setShowConfetti(false), 4500); // Hide confetti after 4.5s (animation duration ~3s + max delay ~1.2s)
+      setTimeout(() => setShowConfetti(false), 7500); // Hide confetti after 7.5s (CSS animation 5s + max delay 2.5s)
     }, 5000);
   }, [namesList, wheelRotation, toast]);
 
@@ -268,3 +268,4 @@ export function NameWheel() {
     </div>
   );
 }
+

@@ -19,7 +19,7 @@ const confettiColors = [
   "hsl(325, 75%, 58%)", // Lotus Pink
 ];
 
-const NUM_CONFETTI_PIECES = 60; // Increased for a bit more density
+const NUM_CONFETTI_PIECES = 150; // Increased for more density
 
 export function Confetti() {
   const [pieces, setPieces] = useState<ConfettiPieceData[]>([]);
@@ -39,7 +39,7 @@ export function Confetti() {
         color: confettiColors[Math.floor(Math.random() * confettiColors.length)],
         style: {
           left: `${Math.random() * 95}%`, // Spread across 95% of the width to avoid edge clipping
-          animationDelay: `${Math.random() * 1.2}s`, // Stagger start times slightly more
+          animationDelay: `${Math.random() * 2.5}s`, // Stagger start times slightly more
           transform: `rotate(${Math.random() * 360}deg) translateX(${horizontalSway}vw) scale(${Math.random() * 0.4 + 0.8})`, // Initial random rotation, horizontal offset, and slight size variation
           willChange: 'transform, opacity', // Performance hint
         },
@@ -65,3 +65,4 @@ export function Confetti() {
     </div>
   );
 }
+
