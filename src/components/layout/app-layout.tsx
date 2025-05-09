@@ -21,6 +21,7 @@ import { Dice5, Home, Coins, Dices, Hash, Disc3, Github } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useLanguage } from "@/context/language-context";
 import { LanguageSwitcher } from "./language-switcher";
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
@@ -88,10 +89,20 @@ export function AppLayout({ children }: { children: ReactNode }) {
             <LanguageSwitcher />
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto">{children}</main>
+        <AnimatePresence mode="wait">
+          <motion.main
+            key={pathname}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.25, ease: 'easeInOut' }}
+            className="flex-1 overflow-y-auto" 
+          >
+            {children}
+          </motion.main>
+        </AnimatePresence>
         <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );
 }
-
