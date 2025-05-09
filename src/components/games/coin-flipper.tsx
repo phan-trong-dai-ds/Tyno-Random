@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Coins } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { HeadsCoinIcon } from "@/components/icons/heads-coin-icon";
+import { TailsCoinIcon } from "@/components/icons/tails-coin-icon";
 
 interface CoinResult {
   id: string;
@@ -82,14 +84,15 @@ export function CoinFlipper() {
           <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
             <div className="flex flex-wrap gap-3">
               {results.map((result, index) => (
-                <span
+                <div
                   key={result.id + (animationKeys[result.id] || 0)}
-                  className={`animate-pop-in px-3 py-1.5 rounded-md text-sm font-semibold shadow-sm
-                    ${result.value === "H" ? "bg-amber-400/30 text-amber-700 border border-amber-500/50" : "bg-slate-400/30 text-slate-700 border border-slate-500/50"}`}
+                  className={`animate-pop-in p-2 rounded-full flex items-center justify-center shadow-sm w-16 h-16
+                    ${result.value === "H" ? "bg-amber-400/30 border border-amber-500/50" : "bg-slate-400/30 border border-slate-500/50"}`}
                   style={{ animationDelay: `${index * 50}ms` }}
+                  title={result.value === "H" ? translations.heads as string : translations.tails as string}
                 >
-                  {result.value === "H" ? translations.heads as string : translations.tails as string}
-                </span>
+                  {result.value === "H" ? <HeadsCoinIcon className="w-10 h-10 text-amber-700" /> : <TailsCoinIcon className="w-10 h-10 text-slate-700" />}
+                </div>
               ))}
             </div>
           </div>
