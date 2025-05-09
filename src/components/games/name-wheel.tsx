@@ -55,7 +55,7 @@ export function NameWheel() {
   };
 
   const handleSortNames = () => {
-    const sorted = [...namesList].sort((a, b) => 
+    const sorted = [...namesList].sort((a, b) =>
       a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
     );
     setNamesInput(sorted.join("\n"));
@@ -74,18 +74,18 @@ export function NameWheel() {
 
     return `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
   };
-  
+
   const calculateTextPathD = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
-    const textRadius = radius * 0.9; 
-  
-    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; 
-    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; 
-  
+    const textRadius = radius * 0.9;
+
+    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180;
+    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180;
+
     const x1 = cx + textRadius * Math.cos(textStartAngleRad);
     const y1 = cy + textRadius * Math.sin(textStartAngleRad);
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
     const y2 = cy + textRadius * Math.sin(textEndAngleRad);
-    
+
     const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
     const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
 
@@ -99,7 +99,7 @@ export function NameWheel() {
   const segments = useMemo((): Segment[] => {
     if (namesList.length === 0) return [];
     const anglePerSegment = 360 / namesList.length;
-    
+
     return namesList.map((name, index) => {
       const startAngle = index * anglePerSegment;
       const endAngle = (index + 1) * anglePerSegment;
@@ -112,7 +112,7 @@ export function NameWheel() {
         pathD: calculateSegmentPath(WHEEL_SIZE / 2, WHEEL_SIZE / 2, WHEEL_RADIUS, startAngle, endAngle),
         textPathD: calculateTextPathD(WHEEL_SIZE / 2, WHEEL_SIZE / 2, WHEEL_RADIUS * 0.75, startAngle, endAngle),
         fillColor: WHEEL_COLORS[index % WHEEL_COLORS.length],
-        textColor: "hsl(var(--primary-foreground))", 
+        textColor: "hsl(var(--primary-foreground))",
       };
     });
   }, [namesList]);
@@ -129,10 +129,10 @@ export function NameWheel() {
     setIsSpinning(true);
     setSelectedName(null);
 
-    const randomSpins = Math.floor(Math.random() * 3) + 5; 
+    const randomSpins = Math.floor(Math.random() * 3) + 5;
     const randomStopAngle = Math.random() * 360;
     const targetRotation = wheelRotation + (randomSpins * 360) + randomStopAngle;
-    
+
     setWheelRotation(targetRotation);
 
     setTimeout(() => {
@@ -141,10 +141,10 @@ export function NameWheel() {
       const effectiveAngle = (360 - (finalAngle % 360)) % 360;
 
       const winnerIndex = Math.floor(effectiveAngle / (360 / namesList.length));
-      const winner = namesList[winnerIndex % namesList.length]; 
+      const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
       // Removed toast for winner announcement, as the Alert will handle it.
-    }, 5000); 
+    }, 5000);
   }, [namesList, wheelRotation, toast]);
 
   const handleRemoveWinner = () => {
@@ -193,9 +193,9 @@ export function NameWheel() {
       <div className="relative flex flex-col items-center space-y-4">
         {namesList.length > 0 ? (
           <svg width={WHEEL_SIZE} height={WHEEL_SIZE} viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`} className="rounded-full shadow-xl border-4 border-background">
-            <g 
-              style={{ 
-                transform: `rotate(${wheelRotation}deg)`, 
+            <g
+              style={{
+                transform: `rotate(${wheelRotation}deg)`,
                 transformOrigin: 'center center',
                 transition: isSpinning ? 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1)' : 'none'
               }}
@@ -215,10 +215,10 @@ export function NameWheel() {
               ))}
             </g>
             {/* Pointer */}
-            <polygon 
-                points={`${WHEEL_SIZE/2 - 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2 + 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2},${WHEEL_SIZE - 20}`} 
-                fill="hsl(var(--accent))" 
-                stroke="hsl(var(--accent-foreground))" 
+            <polygon
+                points={`${WHEEL_SIZE/2 - 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2 + 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2},${WHEEL_SIZE - 20}`}
+                fill="hsl(var(--accent))"
+                stroke="hsl(var(--accent-foreground))"
                 strokeWidth="2"
                 className="drop-shadow-md"
                 transform={`translate(0, ${WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2}) rotate(180 ${WHEEL_SIZE/2} ${(WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2) - (25/2) }) translate(0, -${WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2})`}
@@ -248,11 +248,11 @@ export function NameWheel() {
             <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-600 hover:text-white dark:border-green-500 dark:text-green-300 dark:hover:bg-green-600 dark:hover:text-white">
               <Trash2 className="mr-1 h-4 w-4" /> Remove
             </Button>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={handleCloseWinnerAlert} 
-              className="text-green-700 hover:bg-green-600 hover:text-white dark:text-green-300 dark:hover:bg-green-600 dark:hover:text-white"
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleCloseWinnerAlert}
+              className="text-green-700 hover:bg-green-800 hover:text-white dark:text-green-300 dark:hover:bg-green-800 dark:hover:text-white"
             >
               <X className="mr-1 h-4 w-4" /> Close
             </Button>
@@ -262,4 +262,3 @@ export function NameWheel() {
     </div>
   );
 }
-
