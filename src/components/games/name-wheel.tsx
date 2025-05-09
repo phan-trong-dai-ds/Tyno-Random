@@ -14,12 +14,9 @@ import { useLanguage } from "@/context/language-context";
 
 
 const WHEEL_SIZE = 320; 
-const POINTER_HEIGHT = 25;
-const POINTER_WIDTH = 24;
-// WHEEL_RADIUS is calculated from WHEEL_SIZE, but actual segment drawing uses WHEEL_SIZE/2 as center and WHEEL_RADIUS for paths.
-// Top of wheel circle (segments) is at y = (WHEEL_SIZE / 2) - WHEEL_RADIUS.
-// If WHEEL_RADIUS = WHEEL_SIZE / 2 - 20, then top of wheel circle is y = 20.
-const WHEEL_SEGMENT_TOP_Y = 20; 
+const POINTER_HEIGHT = 25; // Length of the pointer
+const POINTER_WIDTH = 24;  // Width of the base of the pointer
+const MARGIN_FROM_SVG_EDGE = 20; // Margin from SVG edge to where wheel segments/pointer tip align
 
 
 const WHEEL_COLORS = [
@@ -53,7 +50,7 @@ export function NameWheel() {
   const [showConfetti, setShowConfetti] = useState(false);
 
   // Calculate wheel radius for drawing segments
-  const wheelRadiusForSegments = useMemo(() => WHEEL_SIZE / 2 - 20, []);
+  const wheelRadiusForSegments = useMemo(() => WHEEL_SIZE / 2 - MARGIN_FROM_SVG_EDGE, []);
 
 
   useEffect(() => {
@@ -151,34 +148,13 @@ export function NameWheel() {
     setTimeout(() => {
       setIsSpinning(false);
       const finalAngle = targetRotation % 360;
-      // The pointer is at the top (0 degrees in a typical rotational system where 0 is right, 90 is top).
-      // SVG rotation is clockwise. A segment's startAngle is 0 for the first segment at the "3 o'clock" position, increasing clockwise.
-      // We need to find which segment is under the pointer (top, which is 270 degrees or -90 from SVG's 0=right).
-      // Or, if 0 degrees is top for pointer, then finalAngle directly gives how much the "0 degree segment" moved.
-      // Let's adjust effectiveAngle to map to array indices correctly.
-      // Pointer is at 12 o'clock. A segment defined from startAngle to endAngle.
-      // If wheel rotates `finalAngle` clockwise, the segment originally at `theta` is now at `theta + finalAngle`.
-      // We want the segment whose *new* position spans the 12 o'clock mark (270 deg if 0 is right, or 0 if 0 is top).
-      // Let's assume our fixed pointer is at logical 0 degrees (top).
-      // An item originally at angle `alpha` (measured from top, clockwise) ends up at `alpha - finalAngle` relative to top.
-      // We want the item for which `alpha - finalAngle` is effectively 0 (or 360, 720...).
-      // So, `alpha` is effectively `finalAngle`.
-      // The winning segment is the one whose original angular range contains `finalAngle`.
-      // No, it's simpler: the point that ends up at the top (under the pointer) was originally at `360 - finalAngle` (if measuring from top, CW).
+      
+      // Pointer is at the left-middle (180 degrees in SVG rotational system where 0 is right, 90 is bottom, 180 left, 270 top).
+      // We need to find which segment's original angle landed under the 180-degree mark after rotation.
+      // The angle that landed at the 180-degree mark was originally at (180 - finalAngle) mod 360.
+      const normalizedAngle = (180 - (finalAngle % 360) + 360) % 360; 
       
       const anglePerSegment = 360 / namesList.length;
-      // `finalAngle` is the clockwise rotation from the initial state.
-      // The pointer is at the top (imagine it at 0 degrees on a fixed circle).
-      // A segment that starts at `segment.startAngle` (where 0 is to the right, increases CW)
-      // after rotation, its start is at `segment.startAngle + finalAngle`.
-      // The top of the wheel corresponds to an angle of 270 degrees in this coordinate system.
-      // So we are looking for a segment such that `segment.startAngle + finalAngle <= 270` and `segment.endAngle + finalAngle > 270` (modulo 360).
-      // More simply: what original angle landed at the top? It's (360 - finalAngle + 270) % 360 = (630 - finalAngle) % 360.
-      // Let's use the common convention that the pointer indicates the segment whose range *covers* the pointer's angle.
-      // The pointer is at 270 deg (top). After wheel rotation `R`, a point initially at `theta_orig` is now at `theta_orig + R`.
-      // We want `theta_orig + R = 270` (mod 360). So `theta_orig = (270 - R)` (mod 360).
-      // The winning segment's range must contain this `theta_orig`.
-      const normalizedAngle = (270 - (finalAngle % 360) + 360) % 360; // Angle under the pointer, in original wheel coordinates
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
       
       const winner = namesList[winnerIndex % namesList.length]; // ensure index is within bounds
@@ -211,10 +187,15 @@ export function NameWheel() {
     ? translations.namesEnteredSuffix(namesList.length) 
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
 
-  // Calculate pointer points
-  const pointerBaseY = WHEEL_SEGMENT_TOP_Y - POINTER_HEIGHT;
-  const pointerTipY = WHEEL_SEGMENT_TOP_Y;
-  const pointerPoints = `${WHEEL_SIZE/2 - POINTER_WIDTH/2},${pointerBaseY} ${WHEEL_SIZE/2 + POINTER_WIDTH/2},${pointerBaseY} ${WHEEL_SIZE/2},${pointerTipY}`;
+  // Calculate pointer points for a left-pointing arrow
+  // Tip of the pointer will be at the left edge of the segment circle
+  const pointerTipX = MARGIN_FROM_SVG_EDGE;
+  const pointerTipY = WHEEL_SIZE / 2;
+  // Base of the pointer will be to the left of the tip
+  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
+  // Polygon points for a triangle pointing right
+  const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
+
 
   return (
     <div className="space-y-6">
@@ -245,7 +226,7 @@ export function NameWheel() {
 
       <div className="relative flex flex-col items-center space-y-4">
         {namesList.length > 0 ? (
-          <svg width={WHEEL_SIZE} height={WHEEL_SIZE} viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`} className="rounded-full shadow-xl border-4 border-background">
+          <svg width={WHEEL_SIZE} height={WHEEL_SIZE} viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`} className="rounded-full shadow-xl border-4 border-background overflow-visible"> {/* Added overflow-visible */}
             <g
               style={{
                 transform: `rotate(${wheelRotation}deg)`,
