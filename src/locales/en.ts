@@ -32,7 +32,7 @@ export const en = {
   // Coin Flipper Page & Component
   coinFlipper_page_title: "Coin Flipper",
   coinFlipper_page_description: "Toss one or more virtual coins. Will fortune favor you with heads or tails? Adjust the number of coins and see the random outcomes!",
-  numCoinsLabel: "Number of Coins (1-50)",
+  numCoinsLabel: "Number of Coins (1-20)", // Updated max
   flipCoinsButton: "Flip Coins",
   flippingButton: "Flipping...",
   resultsTitle: "Results",
@@ -40,7 +40,7 @@ export const en = {
   tails: "Tails",
   totalHeads: "Total Heads",
   totalTails: "Total Tails",
-  numCoinsValidationAlert: "Please enter a number of coins between 1 and 50.",
+  numCoinsValidationAlert: "Please enter a number of coins between 1 and 20.", // Updated max
 
   // Dice Roller Page & Component
   diceRoller_page_title: "Dice Roller",
@@ -84,3 +84,4 @@ export const en = {
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered
 export type ActualLocaleStrings = typeof en;
+

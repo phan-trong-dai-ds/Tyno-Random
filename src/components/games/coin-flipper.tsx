@@ -23,7 +23,7 @@ export function CoinFlipper() {
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
 
   const handleFlipCoins = () => {
-    if (numCoins <= 0 || numCoins > 50) {
+    if (numCoins <= 0 || numCoins > 20) { // Updated max to 20
       alert(translations.numCoinsValidationAlert as string);
       return;
     }
@@ -47,7 +47,7 @@ export function CoinFlipper() {
   };
 
   useEffect(() => {
-    if (results.length === 0 && !isFlipping && numCoins > 0 && numCoins <= 50) { // Ensure numCoins is valid
+    if (results.length === 0 && !isFlipping && numCoins > 0 && numCoins <= 20) { // Updated max to 20
        const initialCoinId = `coin-0`;
        // Set a default result (e.g., Heads) for the first coin if results are empty
        setResults([{id: initialCoinId, value: 'H'}]);
@@ -66,9 +66,9 @@ export function CoinFlipper() {
             id="numCoins"
             type="number"
             value={numCoins}
-            onChange={(e) => setNumCoins(Math.max(1, Math.min(50, parseInt(e.target.value) || 1)))}
+            onChange={(e) => setNumCoins(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))} // Updated max to 20
             min="1"
-            max="50"
+            max="20" // Updated max to 20
             className="mt-1"
             disabled={isFlipping}
           />
@@ -112,3 +112,4 @@ export function CoinFlipper() {
     </div>
   );
 }
+

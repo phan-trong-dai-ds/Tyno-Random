@@ -28,7 +28,7 @@ export const vi: LocaleStrings = {
   // Coin Flipper Page & Component
   coinFlipper_page_title: "Tung đồng xu",
   coinFlipper_page_description: "Tung một hoặc nhiều đồng xu ảo. Liệu vận may sẽ cho bạn mặt ngửa hay mặt sấp? Điều chỉnh số lượng đồng xu và xem kết quả ngẫu nhiên!",
-  numCoinsLabel: "Số lượng xu (1-50)",
+  numCoinsLabel: "Số lượng xu (1-20)", // Updated max
   flipCoinsButton: "Tung xu",
   flippingButton: "Đang tung...",
   resultsTitle: "Kết quả",
@@ -36,7 +36,7 @@ export const vi: LocaleStrings = {
   tails: "Sấp",
   totalHeads: "Tổng số mặt ngửa",
   totalTails: "Tổng số mặt sấp",
-  numCoinsValidationAlert: "Vui lòng nhập số lượng xu từ 1 đến 50.",
+  numCoinsValidationAlert: "Vui lòng nhập số lượng xu từ 1 đến 20.", // Updated max
 
   // Dice Roller Page & Component
   diceRoller_page_title: "Gieo xúc xắc",
@@ -77,3 +77,4 @@ export const vi: LocaleStrings = {
   winnerRemovedToastTitle: "Đã xóa người thắng cuộc",
   winnerRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi danh sách.`,
 };
+
