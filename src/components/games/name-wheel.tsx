@@ -39,6 +39,7 @@ interface Segment {
   textX: number;
   textY: number;
   displayName: string;
+  textTransform: string;
 }
 
 export function NameWheel() {
@@ -97,13 +98,22 @@ export function NameWheel() {
 
       const visualMidAngleDeg = (startAngle + endAngle) / 2;
       const midAngleRad = (visualMidAngleDeg - 90) * Math.PI / 180; 
-      const textPositionRadiusFactor = 0.65; // Adjust to position text further from center if needed
+      const textPositionRadiusFactor = 0.65; 
       const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRad);
       const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRad);
-      // textTransform is removed to make text horizontal
+      
+      let textRotationAngle = visualMidAngleDeg + 90; // Base rotation for radial text
+      let effectiveAngle = textRotationAngle % 360;
+      if (effectiveAngle < 0) effectiveAngle += 360;
+
+      // Adjust for readability: if text is effectively upside down (pointing into lower-half of its own rotation), flip it.
+      if (effectiveAngle > 90 && effectiveAngle < 270) {
+        textRotationAngle += 180;
+      }
+
 
       let displayName = name;
-      let charDisplayLimit = 7; // Default for fewer names
+      let charDisplayLimit = 7; 
       if (numNames >= 16) charDisplayLimit = 3; 
       else if (numNames >= 10) charDisplayLimit = 4;
       else if (numNames >= 8) charDisplayLimit = 5;
@@ -129,6 +139,7 @@ export function NameWheel() {
         textColor: "hsl(var(--card-foreground))",
         textX,
         textY,
+        textTransform: `rotate(${textRotationAngle} ${textX} ${textY})`,
       };
     });
   }, [namesList, wheelRadiusForSegments]);
@@ -240,7 +251,7 @@ export function NameWheel() {
                   <text
                     x={segment.textX}
                     y={segment.textY}
-                    // transform attribute removed to keep text horizontal
+                    transform={segment.textTransform}
                     fill={segment.textColor}
                     fontSize="14px" 
                     fontWeight="semibold"
