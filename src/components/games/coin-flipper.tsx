@@ -47,13 +47,14 @@ export function CoinFlipper() {
   };
 
   useEffect(() => {
-    if (results.length === 0 && !isFlipping && numCoins > 0) {
+    if (results.length === 0 && !isFlipping && numCoins > 0 && numCoins <= 50) { // Ensure numCoins is valid
        const initialCoinId = `coin-0`;
+       // Set a default result (e.g., Heads) for the first coin if results are empty
        setResults([{id: initialCoinId, value: 'H'}]);
-       setAnimationKeys(prev => ({...prev, [initialCoinId]: 1}));
+       setAnimationKeys(prev => ({...prev, [initialCoinId]: (prev[initialCoinId] || 0) + 1}));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [numCoins]); // Re-run if numCoins changes to initialize for a single coin if list becomes empty
 
 
   return (
@@ -82,7 +83,7 @@ export function CoinFlipper() {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-3 text-foreground">{translations.resultsTitle as string}</h2>
           <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 justify-center"> {/* Added justify-center */}
               {results.map((result, index) => (
                 <div
                   key={result.id + (animationKeys[result.id] || 0)}
@@ -91,7 +92,11 @@ export function CoinFlipper() {
                   style={{ animationDelay: `${index * 50}ms` }}
                   title={result.value === "H" ? translations.heads as string : translations.tails as string}
                 >
-                  {result.value === "H" ? <HeadsCoinIcon className="w-10 h-10 text-amber-700" /> : <TailsCoinIcon className="w-10 h-10 text-slate-700" />}
+                  {result.value === "H" ? (
+                    <HeadsCoinIcon className="w-10 h-10" labelText={translations.heads as string} />
+                  ) : (
+                    <TailsCoinIcon className="w-10 h-10" labelText={translations.tails as string} />
+                  )}
                 </div>
               ))}
             </div>
