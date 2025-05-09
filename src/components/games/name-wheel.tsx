@@ -252,7 +252,7 @@ export function NameWheel() {
               variant="ghost"
               size="sm"
               onClick={handleCloseWinnerAlert}
-              className="text-green-700 hover:bg-green-800 hover:text-white dark:text-green-300 dark:hover:bg-green-800 dark:hover:text-white"
+              className="text-green-700 dark:text-green-300 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 dark:hover:text-white"
             >
               <X className="mr-1 h-4 w-4" /> Close
             </Button>
@@ -262,3 +262,4 @@ export function NameWheel() {
     </div>
   );
 }
+
