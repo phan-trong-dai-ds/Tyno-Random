@@ -14,9 +14,9 @@ import { useLanguage } from "@/context/language-context";
 
 
 const WHEEL_SIZE = 320; 
-const POINTER_HEIGHT = 25; // Length of the pointer
-const POINTER_WIDTH = 24;  // Width of the base of the pointer
-const MARGIN_FROM_SVG_EDGE = 20; // Margin from SVG edge to where wheel segments/pointer tip align
+const POINTER_HEIGHT = 25; 
+const POINTER_WIDTH = 24;  
+const MARGIN_FROM_SVG_EDGE = 20; 
 
 
 const WHEEL_COLORS = [
@@ -34,9 +34,12 @@ interface Segment {
   startAngle: number;
   endAngle: number;
   pathD: string;
-  textPathD: string;
   textColor: string;
   fillColor: string;
+  textX: number;
+  textY: number;
+  textTransform: string;
+  displayName: string;
 }
 
 export function NameWheel() {
@@ -49,7 +52,6 @@ export function NameWheel() {
   const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
 
-  // Calculate wheel radius for drawing segments
   const wheelRadiusForSegments = useMemo(() => WHEEL_SIZE / 2 - MARGIN_FROM_SVG_EDGE, []);
 
 
@@ -84,48 +86,51 @@ export function NameWheel() {
     return `M ${cx} ${cy} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArcFlag} 1 ${x2} ${y2} Z`;
   };
 
-  const calculateTextPathD = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
-    const textRadius = radius * 0.9;
-
-    // The -90 offset means 0deg input refers to the top of the circle for Math.cos/sin
-    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; 
-    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; 
-
-    const x1 = cx + textRadius * Math.cos(textStartAngleRad);
-    const y1 = cy + textRadius * Math.sin(textStartAngleRad);
-    const x2 = cx + textRadius * Math.cos(textEndAngleRad);
-    const y2 = cy + textRadius * Math.sin(textEndAngleRad);
-    
-    // Determine if the segment is mostly in the "bottom half" (angles 90 to 270 in a 0-top system)
-    // to reverse text path direction for readability.
-    const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
-    const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
-
-
-    if (isBottomHalf) {
-      return `M ${x2} ${y2} A ${textRadius} ${textRadius} 0 0 0 ${x1} ${y1}`;
-    }
-    return `M ${x1} ${y1} A ${textRadius} ${textRadius} 0 0 1 ${x2} ${y2}`;
-  };
-
-
   const segments = useMemo((): Segment[] => {
     if (namesList.length === 0) return [];
     const anglePerSegment = 360 / namesList.length;
+    const numNames = namesList.length;
 
     return namesList.map((name, index) => {
-      const startAngle = index * anglePerSegment; // 0 degrees is at the top (12 o'clock) due to -90 in path calc
+      const startAngle = index * anglePerSegment; 
       const endAngle = (index + 1) * anglePerSegment;
       const segmentId = `segment-${index}`;
+
+      const visualMidAngleDeg = (startAngle + endAngle) / 2;
+      const midAngleRad = (visualMidAngleDeg - 90) * Math.PI / 180; 
+      const textPositionRadiusFactor = 0.65;
+      const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRad);
+      const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRad);
+      const textTransform = `rotate(${-visualMidAngleDeg} ${textX} ${textY})`;
+
+      let displayName = name;
+      let charDisplayLimit = 7; // Default for fewer names
+      if (numNames >= 16) charDisplayLimit = 3; 
+      else if (numNames >= 10) charDisplayLimit = 4;
+      else if (numNames >= 8) charDisplayLimit = 5;
+
+
+      if (name.length > charDisplayLimit) {
+        if (charDisplayLimit <= 2) { 
+            displayName = name.substring(0, charDisplayLimit);
+        } else { 
+            displayName = name.substring(0, charDisplayLimit - 2) + "...";
+        }
+      }
+
+
       return {
         id: segmentId,
         name,
+        displayName,
         startAngle,
         endAngle,
         pathD: calculateSegmentPath(WHEEL_SIZE / 2, WHEEL_SIZE / 2, wheelRadiusForSegments, startAngle, endAngle),
-        textPathD: calculateTextPathD(WHEEL_SIZE / 2, WHEEL_SIZE / 2, wheelRadiusForSegments * 0.75, startAngle, endAngle),
         fillColor: WHEEL_COLORS[index % WHEEL_COLORS.length],
-        textColor: "hsl(var(--primary-foreground))",
+        textColor: "hsl(var(--card-foreground))",
+        textX,
+        textY,
+        textTransform,
       };
     });
   }, [namesList, wheelRadiusForSegments]);
@@ -151,20 +156,14 @@ export function NameWheel() {
 
     setTimeout(() => {
       setIsSpinning(false);
-      const finalAngle = targetRotation % 360; // Effective rotation of the wheel (clockwise)
+      const finalAngle = targetRotation % 360; 
       
-      // Pointer is visually at the left-middle (9 o'clock position).
-      // Segments are defined with 0 degrees at the top (12 o'clock) and angles increasing clockwise
-      // (due to the -90 degree offset in `calculateSegmentPath`).
-      // In this segment definition system, the left-middle pointer corresponds to 270 degrees.
-      // The wheel rotates by `finalAngle` (clockwise).
-      // So, the original segment angle that lands under the pointer is (270 - finalAngle) mod 360.
       const normalizedAngle = (270 - finalAngle + 360) % 360;
       
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
       
-      const winner = namesList[winnerIndex % namesList.length]; // ensure index is within bounds
+      const winner = namesList[winnerIndex % namesList.length]; 
       setSelectedName(winner);
       setShowConfetti(true); 
       setTimeout(() => setShowConfetti(false), 7500); 
@@ -175,7 +174,7 @@ export function NameWheel() {
     if (!selectedName) return;
     const newNamesList = namesList.filter(name => name !== selectedName);
     setNamesInput(newNamesList.join("\n"));
-    const removedName = selectedName; // store before clearing
+    const removedName = selectedName; 
     setSelectedName(null); 
     setShowConfetti(false); 
     toast({
@@ -194,13 +193,9 @@ export function NameWheel() {
     ? translations.namesEnteredSuffix(namesList.length) 
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
 
-  // Calculate pointer points for a left-pointing arrow
-  // Tip of the pointer will be at the left edge of the segment circle
   const pointerTipX = MARGIN_FROM_SVG_EDGE;
   const pointerTipY = WHEEL_SIZE / 2;
-  // Base of the pointer will be to the left of the tip
   const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
-  // Polygon points for a triangle pointing right (tip towards wheel)
   const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
 
 
@@ -233,7 +228,7 @@ export function NameWheel() {
 
       <div className="relative flex flex-col items-center space-y-4">
         {namesList.length > 0 ? (
-          <svg width={WHEEL_SIZE} height={WHEEL_SIZE} viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`} className="rounded-full shadow-xl border-4 border-background overflow-visible"> {/* Added overflow-visible */}
+          <svg width={WHEEL_SIZE} height={WHEEL_SIZE} viewBox={`0 0 ${WHEEL_SIZE} ${WHEEL_SIZE}`} className="rounded-full shadow-xl border-4 border-background overflow-visible">
             <g
               style={{
                 transform: `rotate(${wheelRotation}deg)`,
@@ -244,18 +239,22 @@ export function NameWheel() {
               {segments.map((segment) => (
                 <g key={segment.id}>
                   <path d={segment.pathD} fill={segment.fillColor} stroke="hsl(var(--border))" strokeWidth="1"/>
-                  <defs>
-                     <path id={segment.id + "-textpath"} d={segment.textPathD} />
-                  </defs>
-                  <text fill={segment.textColor} fontSize="12px" fontWeight="medium" dy="0.35em" className="pointer-events-none select-none">
-                    <textPath xlinkHref={`#${segment.id}-textpath`} startOffset="50%" textAnchor="middle">
-                      {segment.name.length > 15 ? segment.name.substring(0,12) + "..." : segment.name}
-                    </textPath>
+                  <text
+                    x={segment.textX}
+                    y={segment.textY}
+                    transform={segment.textTransform}
+                    fill={segment.textColor}
+                    fontSize="14px" 
+                    fontWeight="semibold"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    className="pointer-events-none select-none"
+                  >
+                    {segment.displayName}
                   </text>
                 </g>
               ))}
             </g>
-            {/* Pointer */}
             <polygon
                 points={pointerPoints}
                 fill="hsl(var(--accent))"
