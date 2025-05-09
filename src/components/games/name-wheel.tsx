@@ -136,7 +136,7 @@ export function NameWheel() {
         endAngle,
         pathD: calculateSegmentPath(WHEEL_SIZE / 2, WHEEL_SIZE / 2, wheelRadiusForSegments, startAngle, endAngle),
         fillColor: WHEEL_COLORS[index % WHEEL_COLORS.length],
-        textColor: "hsl(var(--card-foreground))",
+        textColor: "hsl(0 0% 0%)", // Always black text
         textX,
         textY,
         textTransform: `rotate(${textRotationAngle} ${textX} ${textY})`,
