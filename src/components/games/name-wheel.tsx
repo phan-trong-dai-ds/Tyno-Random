@@ -248,7 +248,12 @@ export function NameWheel() {
             <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-100 dark:border-green-500 dark:text-green-300 dark:hover:bg-green-800/50">
               <Trash2 className="mr-1 h-4 w-4" /> Remove
             </Button>
-            <Button variant="ghost" size="sm" onClick={handleCloseWinnerAlert} className="text-green-700 hover:bg-green-100 dark:text-green-300 dark:hover:bg-green-800/50">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={handleCloseWinnerAlert} 
+              className="text-green-700 hover:bg-destructive hover:text-destructive-foreground dark:text-green-300 dark:hover:bg-destructive dark:hover:text-destructive-foreground"
+            >
               <X className="mr-1 h-4 w-4" /> Close
             </Button>
           </div>
