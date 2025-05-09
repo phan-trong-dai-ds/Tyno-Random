@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Disc3, VenetianMask } from "lucide-react"; // VenetianMask for 'no names'
+import { Disc3, VenetianMask, Shuffle, ArrowDownAZ } from "lucide-react"; // VenetianMask for 'no names'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,7 +28,7 @@ interface Segment {
 // Updated color palette as per user request
 const WHEEL_COLORS = [
   "hsl(0, 75%, 60%)",   // Red
-  "hsl(135, 65%, 45%)", // Green
+  "hsl(120, 75%, 45%)", // Green (adjusted for better visibility)
   "hsl(60, 85%, 55%)",  // Yellow
   "hsl(220, 75%, 55%)", // Blue
   "hsl(30, 85%, 53%)",  // Orange
@@ -49,6 +49,18 @@ export function NameWheel() {
     setSelectedName(null); // Reset selected name when list changes
   }, [namesInput]);
 
+  const handleShuffleNames = () => {
+    const shuffled = [...namesList].sort(() => Math.random() - 0.5);
+    setNamesInput(shuffled.join("\n"));
+  };
+
+  const handleSortNames = () => {
+    const sorted = [...namesList].sort((a, b) => 
+      a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+    );
+    setNamesInput(sorted.join("\n"));
+  };
+
   const calculateSegmentPath = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
     const startAngleRad = (startAngleDeg - 90) * Math.PI / 180; // Adjust by -90 to start from top
     const endAngleRad = (endAngleDeg - 90) * Math.PI / 180;
@@ -64,19 +76,23 @@ export function NameWheel() {
   };
   
   const calculateTextPathD = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
-    // Place text path closer to the outer edge for readability
     const textRadius = radius * 0.9; 
   
-    // Create a path from start to end of the segment's arc at textRadius
-    // Adjust by -90 to start from top. Text direction might need to be handled.
-    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; // Small offset from edge
-    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; // Small offset from edge
+    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; 
+    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; 
   
     const x1 = cx + textRadius * Math.cos(textStartAngleRad);
     const y1 = cy + textRadius * Math.sin(textStartAngleRad);
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
     const y2 = cy + textRadius * Math.sin(textEndAngleRad);
     
+    // For segments in the bottom half, flip the text path direction for readability
+    const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
+    const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
+
+    if (isBottomHalf) {
+      return `M ${x2} ${y2} A ${textRadius} ${textRadius} 0 0 0 ${x1} ${y1}`;
+    }
     return `M ${x1} ${y1} A ${textRadius} ${textRadius} 0 0 1 ${x2} ${y2}`;
   };
 
@@ -95,9 +111,9 @@ export function NameWheel() {
         startAngle,
         endAngle,
         pathD: calculateSegmentPath(WHEEL_SIZE / 2, WHEEL_SIZE / 2, WHEEL_RADIUS, startAngle, endAngle),
-        textPathD: calculateTextPathD(WHEEL_SIZE / 2, WHEEL_SIZE / 2, WHEEL_RADIUS * 0.75, startAngle, endAngle), // Text path slightly inside
+        textPathD: calculateTextPathD(WHEEL_SIZE / 2, WHEEL_SIZE / 2, WHEEL_RADIUS * 0.75, startAngle, endAngle),
         fillColor: WHEEL_COLORS[index % WHEEL_COLORS.length],
-        textColor: "hsl(var(--primary-foreground))", // White text, should work with the new colors
+        textColor: "hsl(var(--primary-foreground))", 
       };
     });
   }, [namesList]);
@@ -114,7 +130,7 @@ export function NameWheel() {
     setIsSpinning(true);
     setSelectedName(null);
 
-    const randomSpins = Math.floor(Math.random() * 3) + 5; // 5 to 7 full spins
+    const randomSpins = Math.floor(Math.random() * 3) + 5; 
     const randomStopAngle = Math.random() * 360;
     const targetRotation = wheelRotation + (randomSpins * 360) + randomStopAngle;
     
@@ -123,29 +139,34 @@ export function NameWheel() {
     setTimeout(() => {
       setIsSpinning(false);
       const finalAngle = targetRotation % 360;
-      // Pointer is at the top (270 deg in SVG if 0 is right). We map wheel's 0 to be top.
-      // The angle on the wheel that aligns with the pointer (top of the wheel, effectively 0 degrees in our segment calculation).
-      // Our segments start at 0 deg (top) and go clockwise.
-      // The pointer points to whatever segment is at the top.
-      // So, `effectiveAngle = (360 - finalAngle) % 360` is the "start" of wheel at the pointer.
       const effectiveAngle = (360 - (finalAngle % 360)) % 360;
 
       const winnerIndex = Math.floor(effectiveAngle / (360 / namesList.length));
-      const winner = namesList[winnerIndex % namesList.length]; // Modulo for safety
+      const winner = namesList[winnerIndex % namesList.length]; 
       setSelectedName(winner);
       toast({
         title: "And the winner is...",
         description: winner,
         duration: 5000,
       });
-    }, 5000); // Corresponds to CSS transition duration
+    }, 5000); 
   }, [namesList, wheelRotation, toast]);
 
 
   return (
     <div className="space-y-6">
       <div>
-        <Label htmlFor="namesInput" className="text-sm font-medium">Enter Names (one per line)</Label>
+        <div className="flex justify-between items-center mb-1">
+          <Label htmlFor="namesInput" className="text-sm font-medium">Enter Names (one per line)</Label>
+          <div className="flex space-x-2">
+            <Button variant="outline" size="sm" onClick={handleShuffleNames} disabled={isSpinning || namesList.length < 2} aria-label="Shuffle names">
+              <Shuffle className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleSortNames} disabled={isSpinning || namesList.length < 2} aria-label="Sort names">
+              <ArrowDownAZ className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
         <Textarea
           id="namesInput"
           value={namesInput}
@@ -174,7 +195,7 @@ export function NameWheel() {
                   <defs>
                      <path id={segment.id + "-textpath"} d={segment.textPathD} />
                   </defs>
-                  <text fill={segment.textColor} fontSize="12px" fontWeight="medium" dy="0.35em">
+                  <text fill={segment.textColor} fontSize="12px" fontWeight="medium" dy="0.35em" className="pointer-events-none select-none">
                     <textPath xlinkHref={`#${segment.id}-textpath`} startOffset="50%" textAnchor="middle">
                       {segment.name.length > 15 ? segment.name.substring(0,12) + "..." : segment.name}
                     </textPath>
@@ -184,7 +205,7 @@ export function NameWheel() {
             </g>
             {/* Pointer */}
             <polygon 
-                points={`${WHEEL_SIZE/2},0 ${WHEEL_SIZE/2 - 12},25 ${WHEEL_SIZE/2 + 12},25`} 
+                points={`${WHEEL_SIZE/2 - 12},0 ${WHEEL_SIZE/2 + 12},0 ${WHEEL_SIZE/2},25`} 
                 fill="hsl(var(--accent))" 
                 stroke="hsl(var(--accent-foreground))" 
                 strokeWidth="2"
