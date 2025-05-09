@@ -109,16 +109,11 @@ export function NameWheel() {
       const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRadCartesian);
 
       // Rotate text to be radial, with its baseline pointing towards the center of the wheel.
-      // visualMidAngleDeg is the angle of the radius (0=top, 90=right).
-      // Default text is horizontal. To make its baseline align with the radius and point inwards:
-      // rotate by (visualMidAngleDeg - 90).
-      const textRotationAngle = visualMidAngleDeg - 90;
+      const textRotationAngle = visualMidAngleDeg + 90; // Text flows from (textX, textY) towards the center.
 
       let displayName = name;
       // Adjust character limit based on available radial space.
       // Approx. length: wheelRadiusForSegments * (textPositionRadiusFactor - inner_margin_factor)
-      // e.g., 140 * (0.8 - 0.1 for a small inner margin) = 140 * 0.7 = 98px.
-      // At 14px font size, this is ~7 characters.
       let charDisplayLimit = 7;
       if (numNames >= 16) charDisplayLimit = 3;
       else if (numNames >= 10) charDisplayLimit = 4;
@@ -173,7 +168,14 @@ export function NameWheel() {
     setTimeout(() => {
       setIsSpinning(false);
       const finalAngle = targetRotation % 360;
-      const normalizedAngle = (270 - finalAngle + 360) % 360;
+      // The pointer is at 270 degrees (left side). We need to find which segment aligns with it.
+      // Angle of winning segment's *center* relative to pointer:
+      // If pointer is at visual 270deg (left side), then segment whose mid-point is at 270deg relative to current rotation is winner.
+      // Normalized angle: (pointer_visual_angle - finalAngle_visual + 360) % 360
+      // Our pointer points from left (visual 270 deg) towards center.
+      const pointerVisualAngle = 270; // Pointer is on the left, visually at 270 degrees
+      const normalizedAngle = (pointerVisualAngle - finalAngle + 360) % 360;
+
 
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
@@ -207,11 +209,15 @@ export function NameWheel() {
   const namesEnteredText = typeof translations.namesEnteredSuffix === 'function'
     ? translations.namesEnteredSuffix(namesList.length)
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
-
-  const pointerTipX = MARGIN_FROM_SVG_EDGE;
-  const pointerTipY = WHEEL_SIZE / 2;
-  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
-  const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
+  
+  // Pointer is on the left side, pointing inwards
+  const pointerTipX = MARGIN_FROM_SVG_EDGE; // Tip of the pointer near the edge
+  const pointerTipY = WHEEL_SIZE / 2; // Vertically centered
+  const pointerBaseX1 = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT; // Base further left
+  const pointerBaseY1 = pointerTipY - POINTER_WIDTH / 2;
+  const pointerBaseX2 = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
+  const pointerBaseY2 = pointerTipY + POINTER_WIDTH / 2;
+  const pointerPoints = `${pointerBaseX1},${pointerBaseY1} ${pointerBaseX2},${pointerBaseY2} ${pointerTipX},${pointerTipY}`;
 
 
   return (
@@ -270,7 +276,7 @@ export function NameWheel() {
                 </g>
               ))}
             </g>
-            {/* Static pointer */}
+            {/* Static pointer on the left */}
             <polygon
                 points={pointerPoints}
                 fill="hsl(var(--accent))"
