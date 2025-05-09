@@ -6,13 +6,23 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Disc3, VenetianMask, Shuffle, ArrowDownAZ } from "lucide-react"; // VenetianMask for 'no names'
+import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react"; // VenetianMask for 'no names'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 
 
 const WHEEL_SIZE = 320; // SVG canvas size
 const WHEEL_RADIUS = WHEEL_SIZE / 2 - 20; // Actual wheel radius, leave some padding
+
+// Updated color palette as per user request
+const WHEEL_COLORS = [
+  "hsl(0, 75%, 60%)",   // Red
+  "hsl(120, 75%, 45%)", // Green (adjusted for better visibility)
+  "hsl(60, 85%, 55%)",  // Yellow
+  "hsl(220, 75%, 55%)", // Blue
+  "hsl(30, 85%, 53%)",  // Orange
+  "hsl(325, 75%, 58%)", // Lotus Pink (Vibrant Pink)
+];
 
 interface Segment {
   id: string;
@@ -25,16 +35,6 @@ interface Segment {
   fillColor: string;
 }
 
-// Updated color palette as per user request
-const WHEEL_COLORS = [
-  "hsl(0, 75%, 60%)",   // Red
-  "hsl(120, 75%, 45%)", // Green (adjusted for better visibility)
-  "hsl(60, 85%, 55%)",  // Yellow
-  "hsl(220, 75%, 55%)", // Blue
-  "hsl(30, 85%, 53%)",  // Orange
-  "hsl(325, 75%, 58%)", // Lotus Pink (Vibrant Pink)
-];
-
 export function NameWheel() {
   const [namesInput, setNamesInput] = useState("Alice\nBob\nCharlie\nDavid\nEve\nFrank\nGrace\nHenry");
   const [namesList, setNamesList] = useState<string[]>([]);
@@ -46,7 +46,7 @@ export function NameWheel() {
   useEffect(() => {
     const parsedNames = namesInput.split("\n").map(name => name.trim()).filter(name => name.length > 0);
     setNamesList(parsedNames);
-    setSelectedName(null); // Reset selected name when list changes
+    // Do not reset selectedName here, allow the alert to persist if names are edited while it's shown
   }, [namesInput]);
 
   const handleShuffleNames = () => {
@@ -86,7 +86,6 @@ export function NameWheel() {
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
     const y2 = cy + textRadius * Math.sin(textEndAngleRad);
     
-    // For segments in the bottom half, flip the text path direction for readability
     const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
     const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
 
@@ -144,13 +143,25 @@ export function NameWheel() {
       const winnerIndex = Math.floor(effectiveAngle / (360 / namesList.length));
       const winner = namesList[winnerIndex % namesList.length]; 
       setSelectedName(winner);
-      toast({
-        title: "And the winner is...",
-        description: winner,
-        duration: 5000,
-      });
+      // Removed toast for winner announcement, as the Alert will handle it.
     }, 5000); 
   }, [namesList, wheelRotation, toast]);
+
+  const handleRemoveWinner = () => {
+    if (!selectedName) return;
+    const newNamesList = namesList.filter(name => name !== selectedName);
+    setNamesInput(newNamesList.join("\n"));
+    setSelectedName(null); // Hide the alert
+    toast({
+      title: "Winner Removed",
+      description: `${selectedName} has been removed from the list.`,
+      duration: 3000,
+    });
+  };
+
+  const handleCloseWinnerAlert = () => {
+    setSelectedName(null);
+  };
 
 
   return (
@@ -205,11 +216,12 @@ export function NameWheel() {
             </g>
             {/* Pointer */}
             <polygon 
-                points={`${WHEEL_SIZE/2 - 12},0 ${WHEEL_SIZE/2 + 12},0 ${WHEEL_SIZE/2},25`} 
+                points={`${WHEEL_SIZE/2 - 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2 + 12},${WHEEL_SIZE - 20 - 25} ${WHEEL_SIZE/2},${WHEEL_SIZE - 20}`} 
                 fill="hsl(var(--accent))" 
                 stroke="hsl(var(--accent-foreground))" 
                 strokeWidth="2"
                 className="drop-shadow-md"
+                transform={`translate(0, ${WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2}) rotate(180 ${WHEEL_SIZE/2} ${(WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2) - (25/2) }) translate(0, -${WHEEL_SIZE - 20 - (WHEEL_SIZE -20 -25)/2})`}
             />
           </svg>
         ) : (
@@ -229,9 +241,17 @@ export function NameWheel() {
         <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300">
            <Disc3 className="h-5 w-5 !text-green-700 dark:!text-green-300" />
           <AlertTitle className="font-semibold text-lg">Winner!</AlertTitle>
-          <AlertDescription className="text-2xl font-bold animate-pop-in">
+          <AlertDescription className="text-2xl font-bold animate-pop-in mb-4">
             {selectedName}
           </AlertDescription>
+          <div className="flex justify-end space-x-2 mt-2">
+            <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-100 dark:border-green-500 dark:text-green-300 dark:hover:bg-green-800/50">
+              <Trash2 className="mr-1 h-4 w-4" /> Remove
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handleCloseWinnerAlert} className="text-green-700 hover:bg-green-100 dark:text-green-300 dark:hover:bg-green-800/50">
+              <X className="mr-1 h-4 w-4" /> Close
+            </Button>
+          </div>
         </Alert>
       )}
     </div>
