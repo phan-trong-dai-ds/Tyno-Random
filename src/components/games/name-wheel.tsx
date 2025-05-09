@@ -38,7 +38,6 @@ interface Segment {
   fillColor: string;
   textX: number;
   textY: number;
-  textTransform: string;
   displayName: string;
 }
 
@@ -98,10 +97,10 @@ export function NameWheel() {
 
       const visualMidAngleDeg = (startAngle + endAngle) / 2;
       const midAngleRad = (visualMidAngleDeg - 90) * Math.PI / 180; 
-      const textPositionRadiusFactor = 0.65;
+      const textPositionRadiusFactor = 0.65; // Adjust to position text further from center if needed
       const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRad);
       const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRad);
-      const textTransform = `rotate(${-visualMidAngleDeg} ${textX} ${textY})`;
+      // textTransform is removed to make text horizontal
 
       let displayName = name;
       let charDisplayLimit = 7; // Default for fewer names
@@ -130,7 +129,6 @@ export function NameWheel() {
         textColor: "hsl(var(--card-foreground))",
         textX,
         textY,
-        textTransform,
       };
     });
   }, [namesList, wheelRadiusForSegments]);
@@ -242,7 +240,7 @@ export function NameWheel() {
                   <text
                     x={segment.textX}
                     y={segment.textY}
-                    transform={segment.textTransform}
+                    // transform attribute removed to keep text horizontal
                     fill={segment.textColor}
                     fontSize="14px" 
                     fontWeight="semibold"
