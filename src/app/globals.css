@@ -6,78 +6,99 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%; /* White */
-    --foreground: 222 47% 11%; /* Dark Blue */
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    --primary: 207 68% 53%; /* Calming Blue */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 210 40% 96.1%; /* Default Light Gray */
-    --secondary-foreground: 222 47% 11%; /* Dark Blue */
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 210 30% 45%;
-    --accent: 35 92% 51%; /* Sunny Orange */
-    --accent-foreground: 0 0% 100%; /* White on Accent */
-    --destructive: 6 80% 57%; /* Vibrant Red */
-    --destructive-foreground: 0 0% 100%; /* White */
-    --border: 214 31.8% 91.4%;
-    --input: 214 31.8% 91.4%;
-    --ring: 207 68% 53%; /* Calming Blue for ring */
+    /* Material 3 Inspired Light Theme */
+    --background: 220 30% 96%; /* Very Light Gray-Blue (M3 Background) */
+    --foreground: 220 20% 20%; /* Dark Gray-Blue (M3 On-Background) */
+    
+    --card: 0 0% 100%; /* White (M3 Surface) */
+    --card-foreground: 220 20% 20%; /* Dark Gray-Blue (M3 On-Surface) */
+    
+    --popover: 0 0% 100%; /* White (M3 Surface for Popovers) */
+    --popover-foreground: 220 20% 20%; /* Dark Gray-Blue (M3 On-Surface) */
+    
+    --primary: 220 85% 60%; /* Vibrant Blue (M3 Primary) */
+    --primary-foreground: 0 0% 100%; /* White (M3 On-Primary) */
+    
+    --secondary: 200 70% 75%; /* Lighter Blue/Teal (M3 Secondary/Secondary Container) */
+    --secondary-foreground: 220 25% 25%; /* Dark Gray-Blue (M3 On-Secondary/On-Secondary Container) */
+    
+    --muted: 220 25% 90%; /* Lighter Gray-Blue (M3 Surface Variant) */
+    --muted-foreground: 220 20% 45%; /* Medium Gray-Blue (M3 On-Surface Variant) */
+    
+    --accent: 30 100% 60%; /* Bright Orange (M3 Tertiary) */
+    --accent-foreground: 20 0% 10%; /* Darker shade for text on accent */
+    
+    --destructive: 0 80% 60%; /* Red (M3 Error) */
+    --destructive-foreground: 0 0% 100%; /* White (M3 On-Error) */
+    
+    --border: 220 20% 85%; /* Light Gray-Blue Border (M3 Outline) */
+    --input: 220 20% 85%; /* M3 Outline for inputs */
+    --ring: 220 85% 60%; /* Primary for focus ring (M3 Primary) */
+    
+    --radius: 0.75rem; /* Slightly larger base radius for M3 (12px) */
+
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
 
-    /* Sidebar specific theme */
-    --sidebar-background: 222 47% 11%; /* Dark Blue for sidebar */
-    --sidebar-foreground: 0 0% 98%; /* Light Gray/White for sidebar text */
-    --sidebar-primary: 35 92% 51%; /* Sunny Orange for sidebar primary elements */
-    --sidebar-primary-foreground: 222 47% 11%; /* Dark Blue for text on sidebar primary */
-    --sidebar-accent: 222 47% 20%; /* Slightly lighter Dark Blue for sidebar accent */
-    --sidebar-accent-foreground: 0 0% 98%; /* Light Gray/White for text on sidebar accent */
-    --sidebar-border: 222 47% 15%; /* Border for sidebar elements */
-    --sidebar-ring: 35 92% 51%; /* Sunny Orange for sidebar ring */
+    /* Sidebar specific theme (M3 Navigation Drawer inspired) */
+    --sidebar-background: 220 30% 92%; /* Light Gray-Blue (M3 Surface Container Low) */
+    --sidebar-foreground: 220 20% 25%; /* Dark text */
+    --sidebar-primary: 220 85% 60%; /* Primary color for highlights */
+    --sidebar-primary-foreground: 0 0% 100%; /* White text on primary highlight */
+    --sidebar-accent: 220 50% 85%; /* Active item background (Lighter primary tone) */
+    --sidebar-accent-foreground: 220 85% 55%; /* Active item text (Primary color) */
+    --sidebar-border: 220 20% 80%; /* Subtle border */
+    --sidebar-ring: 220 85% 60%; /* Primary for focus */
   }
 
   .dark {
-    --background: 222 47% 11%; /* Dark Blue */
-    --foreground: 0 0% 98%; /* Light Gray/White */
-    --card: 222 47% 14%; /* Slightly Lighter Dark Blue */
-    --card-foreground: 0 0% 98%;
-    --popover: 222 47% 11%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 207 68% 53%; /* Calming Blue */
-    --primary-foreground: 0 0% 100%; /* White */
-    --secondary: 210 40% 15%; /* Darker Gray */
-    --secondary-foreground: 0 0% 98%;
-    --muted: 210 40% 15%;
-    --muted-foreground: 210 30% 65%;
-    --accent: 35 92% 51%; /* Sunny Orange */
-    --accent-foreground: 222 47% 11%; /* Dark blue text on accent */
-    --destructive: 6 70% 50%; /* Adjusted Vibrant Red */
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 32.6% 17.5%;
-    --input: 217 32.6% 17.5%;
-    --ring: 207 68% 53%; /* Calming Blue for ring */
+    /* Material 3 Inspired Dark Theme */
+    --background: 220 20% 12%; /* Very Dark Gray-Blue (M3 Background) */
+    --foreground: 220 20% 90%; /* Light Gray-Blue (M3 On-Background) */
+
+    --card: 220 20% 18%; /* Darker Gray-Blue (M3 Surface) */
+    --card-foreground: 220 20% 90%; /* Light Gray-Blue (M3 On-Surface) */
+
+    --popover: 220 20% 18%; /* (M3 Surface for Popovers) */
+    --popover-foreground: 220 20% 90%; /* (M3 On-Surface) */
+
+    --primary: 220 80% 70%; /* Lighter Vibrant Blue (M3 Primary) */
+    --primary-foreground: 220 25% 15%; /* Dark Blue (M3 On-Primary) */
+
+    --secondary: 200 60% 50%; /* Muted Blue/Teal (M3 Secondary/Secondary Container) */
+    --secondary-foreground: 200 15% 90%; /* Very Light Blue/Teal (M3 On-Secondary/On-Secondary Container) */
+
+    --muted: 220 15% 25%; /* Darker Gray-Blue (M3 Surface Variant) */
+    --muted-foreground: 220 15% 65%; /* Medium-Light Gray-Blue (M3 On-Surface Variant) */
+
+    --accent: 30 90% 65%; /* Bright Orange (M3 Tertiary) */
+    --accent-foreground: 30 25% 10%; /* Darker shade for text on accent */
+
+    --destructive: 0 70% 65%; /* Lighter Red (M3 Error) */
+    --destructive-foreground: 0 0% 98%; /* Light text on destructive */
+    
+    --border: 220 15% 35%; /* Medium-Dark Gray-Blue Border (M3 Outline) */
+    --input: 220 15% 35%; /* M3 Outline for inputs */
+    --ring: 220 80% 70%; /* Primary for focus ring (M3 Primary) */
+
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    /* Sidebar specific theme for dark mode */
-    --sidebar-background: 222 47% 8%; /* Even Darker Blue for sidebar */
-    --sidebar-foreground: 0 0% 98%; /* Light Gray/White for sidebar text */
-    --sidebar-primary: 35 92% 51%; /* Sunny Orange for sidebar primary elements */
-    --sidebar-primary-foreground: 222 47% 11%; /* Dark Blue for text on sidebar primary */
-    --sidebar-accent: 222 47% 15%; /* Slightly lighter Dark Blue for sidebar accent */
-    --sidebar-accent-foreground: 0 0% 98%; /* Light Gray/White for text on sidebar accent */
-    --sidebar-border: 222 47% 12%; /* Border for sidebar elements */
-    --sidebar-ring: 35 92% 51%; /* Sunny Orange for sidebar ring */
+    /* Sidebar specific theme for dark mode (M3 Navigation Drawer inspired) */
+    --sidebar-background: 220 20% 15%; /* Dark Gray-Blue (M3 Surface Container Low) */
+    --sidebar-foreground: 220 20% 85%; /* Light text */
+    --sidebar-primary: 220 80% 70%; /* Lighter primary for highlights */
+    --sidebar-primary-foreground: 220 25% 15%; /* Dark text on primary highlight */
+    --sidebar-accent: 220 50% 30%; /* Active item background (Darker primary tone) */
+    --sidebar-accent-foreground: 220 80% 75%; /* Active item text (Lighter primary color) */
+    --sidebar-border: 220 15% 30%; /* Subtle border */
+    --sidebar-ring: 220 80% 70%; /* Lighter primary for focus */
   }
 }
 
