@@ -104,10 +104,10 @@ export function NameWheel() {
       
       let textRotationAngle = visualMidAngleDeg + 90; // Base rotation for radial text
       let effectiveAngle = textRotationAngle % 360;
-      if (effectiveAngle < 0) effectiveAngle += 360;
+      if (effectiveAngle < 0) effectiveAngle += 360; // Normalize to 0-360
 
       // Adjust for readability: if text is effectively upside down (pointing into lower-half of its own rotation), flip it.
-      if (effectiveAngle > 90 && effectiveAngle < 270) {
+      if (effectiveAngle > 90 && effectiveAngle <= 270) { // Ensures text pointing straight down (270 deg) is also flipped
         textRotationAngle += 180;
       }
 
@@ -167,7 +167,14 @@ export function NameWheel() {
       setIsSpinning(false);
       const finalAngle = targetRotation % 360; 
       
-      const normalizedAngle = (270 - finalAngle + 360) % 360;
+      // The pointer is at 270 degrees (left side, pointing right) in the SVG's coordinate system if the wheel itself is not rotated.
+      // So, the winning segment is the one whose start/end angle range (after wheel rotation) covers 270 degrees.
+      // Or, equivalently, what segment is under the pointer if the pointer was at 0 degrees and the wheel was rotated by -finalAngle.
+      // A simpler way: the pointer is on the left (270 degrees if 0 is top).
+      // The angle of the "winning section" relative to the fixed pointer (at 270 deg if wheel 0deg is top) is `(270 - finalAngle + 360) % 360`.
+      // Example: if wheel stops at finalAngle = 0, winner is at 270 deg position.
+      // If wheel stops at finalAngle = 270, winner is at 0 deg position.
+      const normalizedAngle = (270 - finalAngle + 360) % 360; // Angle under the pointer if pointer is at 270 deg.
       
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
@@ -202,9 +209,15 @@ export function NameWheel() {
     ? translations.namesEnteredSuffix(namesList.length) 
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
 
-  const pointerTipX = MARGIN_FROM_SVG_EDGE;
+  // Pointer points from left (270 deg) towards the center. Tip is at the edge of the segments.
+  // SVG 0,0 is top-left. Wheel center is WHEEL_SIZE/2, WHEEL_SIZE/2.
+  // Pointer points right, from outside the wheel towards the center.
+  // Tip of the pointer should be at (MARGIN_FROM_SVG_EDGE, WHEEL_SIZE / 2)
+  const pointerTipX = MARGIN_FROM_SVG_EDGE; // Pointing from the left
   const pointerTipY = WHEEL_SIZE / 2;
-  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
+  // Base of the pointer triangle, further left
+  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT; 
+  // Triangle points: (base, tipY - width/2), (base, tipY + width/2), (tipX, tipY)
   const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
 
 
@@ -264,6 +277,7 @@ export function NameWheel() {
                 </g>
               ))}
             </g>
+            {/* Static pointer */}
             <polygon
                 points={pointerPoints}
                 fill="hsl(var(--accent))"
