@@ -16,10 +16,6 @@ export function ThemeToggle() {
     setMounted(true);
   }, []);
 
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "light" ? "dark" : "light");
-  };
-
   if (!mounted) {
     // Render a static placeholder during SSR and initial client render
     // to prevent hydration mismatch.
@@ -28,8 +24,8 @@ export function ThemeToggle() {
         variant="ghost"
         size="icon"
         disabled
-        aria-label={translations.toggleTheme as string || "Toggle theme"}
-        title={translations.toggleTheme as string || "Toggle theme"}
+        aria-label="Toggle theme" // Hardcoded English
+        title="Toggle theme"      // Hardcoded English
       >
         <Sun className="h-[1.2rem] w-[1.2rem]" /> {/* Default static icon */}
       </Button>
@@ -46,7 +42,7 @@ export function ThemeToggle() {
     <Button
       variant="ghost"
       size="icon"
-      onClick={toggleTheme}
+      onClick={() => setTheme(resolvedTheme === "light" ? "dark" : "light")}
       aria-label={buttonLabel}
       title={buttonLabel}
     >
