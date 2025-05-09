@@ -83,20 +83,23 @@ export function CoinFlipper() {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-3 text-foreground">{translations.resultsTitle as string}</h2>
           <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
-            <div className="flex flex-wrap gap-3 justify-center"> {/* Added justify-center */}
+            <div className="flex flex-wrap gap-4 justify-center"> {/* Increased gap for better spacing */}
               {results.map((result, index) => (
                 <div
                   key={result.id + (animationKeys[result.id] || 0)}
-                  className={`animate-pop-in p-2 rounded-full flex items-center justify-center shadow-sm w-16 h-16
+                  className={`animate-pop-in p-3 rounded-lg flex flex-col items-center justify-center shadow-sm w-24 
                     ${result.value === "H" ? "bg-amber-400/30 border border-amber-500/50" : "bg-slate-400/30 border border-slate-500/50"}`}
                   style={{ animationDelay: `${index * 50}ms` }}
                   title={result.value === "H" ? translations.heads as string : translations.tails as string}
                 >
                   {result.value === "H" ? (
-                    <HeadsCoinIcon className="w-10 h-10" labelText={translations.heads as string} />
+                    <HeadsCoinIcon className="w-10 h-10" />
                   ) : (
-                    <TailsCoinIcon className="w-10 h-10" labelText={translations.tails as string} />
+                    <TailsCoinIcon className="w-10 h-10" />
                   )}
+                  <span className="mt-2 text-sm font-medium text-foreground">
+                    {result.value === "H" ? translations.heads as string : translations.tails as string}
+                  </span>
                 </div>
               ))}
             </div>
