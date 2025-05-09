@@ -11,12 +11,15 @@ import { useLanguage } from "@/context/language-context";
 import { CustomDice1Icon } from "@/components/icons/custom-dice1-icon";
 
 const DiceIcon = ({ value }: { value: number }) => {
+  const colorClass = (value === 1 || value === 4) ? "text-destructive" : "text-primary";
+  const iconClassName = `w-10 h-10 ${colorClass}`;
+
   if (value === 1) {
-    return <CustomDice1Icon className="w-10 h-10 text-primary" />;
+    return <CustomDice1Icon className={iconClassName} />;
   }
   const icons = [CustomDice1Icon, Dice2, Dice3, Dice4, Dice5, Dice6]; // CustomDice1Icon is at index 0
   const IconComponent = icons[value - 1] || CustomDice1Icon; // Fallback to CustomDice1Icon if value is out of typical 1-6 range
-  return <IconComponent className="w-10 h-10 text-primary" />;
+  return <IconComponent className={iconClassName} />;
 };
 
 interface DiceResult {
@@ -115,3 +118,4 @@ export function DiceRoller() {
     </div>
   );
 }
+
