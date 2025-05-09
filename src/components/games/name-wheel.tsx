@@ -66,13 +66,17 @@ export function NameWheel() {
     const x1 = cx + textRadius * Math.cos(textStartAngleRad);
     const y1 = cy + textRadius * Math.sin(textStartAngleRad);
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
-    // y2 is not directly used in M command for arc, but good for context
+    const y2 = cy + textRadius * Math.sin(textEndAngleRad); // Calculate y2
     
     // if segment angle is > 180, text might be upside down.
     // For simplicity, we assume segments are not that large or text is short.
-    const sweepFlag = midAngleDeg > 180 && (endAngleDeg - startAngleDeg) < 180 ? 0 : 1; 
+    // const sweepFlag = midAngleDeg > 180 && (endAngleDeg - startAngleDeg) < 180 ? 0 : 1; 
     // This logic for sweepFlag might need adjustment for text orientation
-    // For typical wheels, sweepFlag is 1.
+    // For typical wheels, sweepFlag is 1. The SVG arc path A command takes 7 parameters:
+    // rx, ry, x-axis-rotation, large-arc-flag, sweep-flag, x, y
+    // The sweep-flag (0 or 1) determines if the arc is drawn clockwise or counter-clockwise.
+    // We want the text to generally flow from start to end of the segment along the arc.
+    // A sweep-flag of 1 typically draws the arc in a "positive-angle" direction.
 
     return `M ${x1} ${y1} A ${textRadius} ${textRadius} 0 0 1 ${x2} ${y2}`;
   };
@@ -215,3 +219,4 @@ export function NameWheel() {
     </div>
   );
 }
+
