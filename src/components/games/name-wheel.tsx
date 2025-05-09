@@ -6,17 +6,17 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react"; 
+import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
 import { useLanguage } from "@/context/language-context";
 
 
-const WHEEL_SIZE = 320; 
-const POINTER_HEIGHT = 25; 
-const POINTER_WIDTH = 24;  
-const MARGIN_FROM_SVG_EDGE = 20; 
+const WHEEL_SIZE = 320;
+const POINTER_HEIGHT = 25;
+const POINTER_WIDTH = 24;
+const MARGIN_FROM_SVG_EDGE = 20;
 
 
 const WHEEL_COLORS = [
@@ -40,6 +40,8 @@ interface Segment {
   textY: number;
   displayName: string;
   textTransform: string;
+  textAnchor: string;
+  dominantBaseline: string;
 }
 
 export function NameWheel() {
@@ -48,7 +50,7 @@ export function NameWheel() {
   const [namesList, setNamesList] = useState<string[]>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [wheelRotation, setWheelRotation] = useState(0); 
+  const [wheelRotation, setWheelRotation] = useState(0);
   const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
 
@@ -73,7 +75,7 @@ export function NameWheel() {
   };
 
   const calculateSegmentPath = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
-    const startAngleRad = (startAngleDeg - 90) * Math.PI / 180; 
+    const startAngleRad = (startAngleDeg - 90) * Math.PI / 180;
     const endAngleRad = (endAngleDeg - 90) * Math.PI / 180;
 
     const x1 = cx + radius * Math.cos(startAngleRad);
@@ -92,41 +94,44 @@ export function NameWheel() {
     const numNames = namesList.length;
 
     return namesList.map((name, index) => {
-      const startAngle = index * anglePerSegment; 
+      const startAngle = index * anglePerSegment;
       const endAngle = (index + 1) * anglePerSegment;
       const segmentId = `segment-${index}`;
 
       const visualMidAngleDeg = (startAngle + endAngle) / 2;
-      const midAngleRad = (visualMidAngleDeg - 90) * Math.PI / 180; 
-      const textPositionRadiusFactor = 0.65; 
-      const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRad);
-      const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRad);
-      
-      let textRotationAngle = visualMidAngleDeg + 90; // Base rotation for radial text
-      let effectiveAngle = textRotationAngle % 360;
-      if (effectiveAngle < 0) effectiveAngle += 360; // Normalize to 0-360
+      // midAngleRadCartesian is for Math.cos/sin, where 0 degrees is to the right.
+      // visualMidAngleDeg is 0 degrees at the top of the wheel, clockwise.
+      const midAngleRadCartesian = (visualMidAngleDeg - 90) * Math.PI / 180;
 
-      // Adjust for readability: if text is effectively upside down (pointing into lower-half of its own rotation), flip it.
-      if (effectiveAngle > 90 && effectiveAngle <= 270) { // Ensures text pointing straight down (270 deg) is also flipped
-        textRotationAngle += 180;
-      }
+      // Position the start of the text near the outer edge of the segment.
+      const textPositionRadiusFactor = 0.8; // Text starts at 80% of the segment's radius from the center.
+      const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRadCartesian);
+      const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRadCartesian);
 
+      // Rotate text to be radial, with its baseline pointing towards the center of the wheel.
+      // visualMidAngleDeg is the angle of the radius (0=top, 90=right).
+      // Default text is horizontal. To make its baseline align with the radius and point inwards:
+      // rotate by (visualMidAngleDeg - 90).
+      const textRotationAngle = visualMidAngleDeg - 90;
 
       let displayName = name;
-      let charDisplayLimit = 7; 
-      if (numNames >= 16) charDisplayLimit = 3; 
+      // Adjust character limit based on available radial space.
+      // Approx. length: wheelRadiusForSegments * (textPositionRadiusFactor - inner_margin_factor)
+      // e.g., 140 * (0.8 - 0.1 for a small inner margin) = 140 * 0.7 = 98px.
+      // At 14px font size, this is ~7 characters.
+      let charDisplayLimit = 7;
+      if (numNames >= 16) charDisplayLimit = 3;
       else if (numNames >= 10) charDisplayLimit = 4;
       else if (numNames >= 8) charDisplayLimit = 5;
 
 
       if (name.length > charDisplayLimit) {
-        if (charDisplayLimit <= 2) { 
+        if (charDisplayLimit <= 2) {
             displayName = name.substring(0, charDisplayLimit);
-        } else { 
+        } else {
             displayName = name.substring(0, charDisplayLimit - 2) + "...";
         }
       }
-
 
       return {
         id: segmentId,
@@ -140,6 +145,8 @@ export function NameWheel() {
         textX,
         textY,
         textTransform: `rotate(${textRotationAngle} ${textX} ${textY})`,
+        textAnchor: "start", // Text starts at (textX, textY) and flows along its rotated baseline
+        dominantBaseline: "middle", // Vertically center text on its baseline
       };
     });
   }, [namesList, wheelRadiusForSegments]);
@@ -155,7 +162,7 @@ export function NameWheel() {
     }
     setIsSpinning(true);
     setSelectedName(null);
-    setShowConfetti(false); 
+    setShowConfetti(false);
 
     const randomSpins = Math.floor(Math.random() * 3) + 5;
     const randomStopAngle = Math.random() * 360;
@@ -165,24 +172,16 @@ export function NameWheel() {
 
     setTimeout(() => {
       setIsSpinning(false);
-      const finalAngle = targetRotation % 360; 
-      
-      // The pointer is at 270 degrees (left side, pointing right) in the SVG's coordinate system if the wheel itself is not rotated.
-      // So, the winning segment is the one whose start/end angle range (after wheel rotation) covers 270 degrees.
-      // Or, equivalently, what segment is under the pointer if the pointer was at 0 degrees and the wheel was rotated by -finalAngle.
-      // A simpler way: the pointer is on the left (270 degrees if 0 is top).
-      // The angle of the "winning section" relative to the fixed pointer (at 270 deg if wheel 0deg is top) is `(270 - finalAngle + 360) % 360`.
-      // Example: if wheel stops at finalAngle = 0, winner is at 270 deg position.
-      // If wheel stops at finalAngle = 270, winner is at 0 deg position.
-      const normalizedAngle = (270 - finalAngle + 360) % 360; // Angle under the pointer if pointer is at 270 deg.
-      
+      const finalAngle = targetRotation % 360;
+      const normalizedAngle = (270 - finalAngle + 360) % 360;
+
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
-      
-      const winner = namesList[winnerIndex % namesList.length]; 
+
+      const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
-      setShowConfetti(true); 
-      setTimeout(() => setShowConfetti(false), 7500); 
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 7500);
     }, 5000);
   }, [namesList, wheelRotation, toast, translations]);
 
@@ -190,9 +189,9 @@ export function NameWheel() {
     if (!selectedName) return;
     const newNamesList = namesList.filter(name => name !== selectedName);
     setNamesInput(newNamesList.join("\n"));
-    const removedName = selectedName; 
-    setSelectedName(null); 
-    setShowConfetti(false); 
+    const removedName = selectedName;
+    setSelectedName(null);
+    setShowConfetti(false);
     toast({
       title: translations.winnerRemovedToastTitle as string,
       description: (translations.winnerRemovedToastDescription as (name: string) => string)(removedName),
@@ -202,22 +201,16 @@ export function NameWheel() {
 
   const handleCloseWinnerAlert = () => {
     setSelectedName(null);
-    setShowConfetti(false); 
+    setShowConfetti(false);
   };
 
-  const namesEnteredText = typeof translations.namesEnteredSuffix === 'function' 
-    ? translations.namesEnteredSuffix(namesList.length) 
+  const namesEnteredText = typeof translations.namesEnteredSuffix === 'function'
+    ? translations.namesEnteredSuffix(namesList.length)
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
 
-  // Pointer points from left (270 deg) towards the center. Tip is at the edge of the segments.
-  // SVG 0,0 is top-left. Wheel center is WHEEL_SIZE/2, WHEEL_SIZE/2.
-  // Pointer points right, from outside the wheel towards the center.
-  // Tip of the pointer should be at (MARGIN_FROM_SVG_EDGE, WHEEL_SIZE / 2)
-  const pointerTipX = MARGIN_FROM_SVG_EDGE; // Pointing from the left
+  const pointerTipX = MARGIN_FROM_SVG_EDGE;
   const pointerTipY = WHEEL_SIZE / 2;
-  // Base of the pointer triangle, further left
-  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT; 
-  // Triangle points: (base, tipY - width/2), (base, tipY + width/2), (tipX, tipY)
+  const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
   const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
 
 
@@ -266,10 +259,10 @@ export function NameWheel() {
                     y={segment.textY}
                     transform={segment.textTransform}
                     fill={segment.textColor}
-                    fontSize="14px" 
+                    fontSize="14px"
                     fontWeight="semibold"
-                    textAnchor="middle"
-                    dominantBaseline="middle"
+                    textAnchor={segment.textAnchor}
+                    dominantBaseline={segment.dominantBaseline}
                     className="pointer-events-none select-none"
                   >
                     {segment.displayName}
@@ -300,7 +293,7 @@ export function NameWheel() {
       </div>
 
       {selectedName && !isSpinning && (
-        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden"> 
+        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden">
            <Disc3 className="h-5 w-5 !text-green-700 dark:!text-green-300" />
           <AlertTitle className="font-semibold text-lg">{translations.winnerAlertTitle as string}</AlertTitle>
           <AlertDescription className="text-2xl font-bold animate-pop-in mb-4">
