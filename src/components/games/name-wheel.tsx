@@ -6,15 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react"; // VenetianMask for 'no names'
+import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react"; 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
+import { Confetti } from "@/components/effects/confetti";
 
 
-const WHEEL_SIZE = 320; // SVG canvas size
-const WHEEL_RADIUS = WHEEL_SIZE / 2 - 20; // Actual wheel radius, leave some padding
+const WHEEL_SIZE = 320; 
+const WHEEL_RADIUS = WHEEL_SIZE / 2 - 20; 
 
-// Updated color palette as per user request
+
 const WHEEL_COLORS = [
   "hsl(0, 75%, 60%)",   // Red
   "hsl(120, 75%, 45%)", // Green (adjusted for better visibility)
@@ -40,13 +41,13 @@ export function NameWheel() {
   const [namesList, setNamesList] = useState<string[]>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [wheelRotation, setWheelRotation] = useState(0); // in degrees
+  const [wheelRotation, setWheelRotation] = useState(0); 
   const { toast } = useToast();
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     const parsedNames = namesInput.split("\n").map(name => name.trim()).filter(name => name.length > 0);
     setNamesList(parsedNames);
-    // Do not reset selectedName here, allow the alert to persist if names are edited while it's shown
   }, [namesInput]);
 
   const handleShuffleNames = () => {
@@ -62,7 +63,7 @@ export function NameWheel() {
   };
 
   const calculateSegmentPath = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
-    const startAngleRad = (startAngleDeg - 90) * Math.PI / 180; // Adjust by -90 to start from top
+    const startAngleRad = (startAngleDeg - 90) * Math.PI / 180; 
     const endAngleRad = (endAngleDeg - 90) * Math.PI / 180;
 
     const x1 = cx + radius * Math.cos(startAngleRad);
@@ -78,14 +79,14 @@ export function NameWheel() {
   const calculateTextPathD = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
     const textRadius = radius * 0.9;
 
-    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180;
-    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180;
+    const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; 
+    const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; 
 
     const x1 = cx + textRadius * Math.cos(textStartAngleRad);
     const y1 = cy + textRadius * Math.sin(textStartAngleRad);
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
     const y2 = cy + textRadius * Math.sin(textEndAngleRad);
-
+    
     const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
     const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
 
@@ -128,6 +129,7 @@ export function NameWheel() {
     }
     setIsSpinning(true);
     setSelectedName(null);
+    setShowConfetti(false); // Ensure confetti is off before spin
 
     const randomSpins = Math.floor(Math.random() * 3) + 5;
     const randomStopAngle = Math.random() * 360;
@@ -143,7 +145,8 @@ export function NameWheel() {
       const winnerIndex = Math.floor(effectiveAngle / (360 / namesList.length));
       const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
-      // Removed toast for winner announcement, as the Alert will handle it.
+      setShowConfetti(true); 
+      setTimeout(() => setShowConfetti(false), 4500); // Hide confetti after 4.5s (animation duration ~3s + max delay ~1.2s)
     }, 5000);
   }, [namesList, wheelRotation, toast]);
 
@@ -151,7 +154,8 @@ export function NameWheel() {
     if (!selectedName) return;
     const newNamesList = namesList.filter(name => name !== selectedName);
     setNamesInput(newNamesList.join("\n"));
-    setSelectedName(null); // Hide the alert
+    setSelectedName(null); 
+    setShowConfetti(false); 
     toast({
       title: "Winner Removed",
       description: `${selectedName} has been removed from the list.`,
@@ -161,11 +165,13 @@ export function NameWheel() {
 
   const handleCloseWinnerAlert = () => {
     setSelectedName(null);
+    setShowConfetti(false); 
   };
 
 
   return (
     <div className="space-y-6">
+      {showConfetti && <Confetti />}
       <div>
         <div className="flex justify-between items-center mb-1">
           <Label htmlFor="namesInput" className="text-sm font-medium">Enter Names (one per line)</Label>
@@ -238,7 +244,7 @@ export function NameWheel() {
       </div>
 
       {selectedName && !isSpinning && (
-        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300">
+        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden"> {/* Added relative and overflow-hidden for confetti containment if desired, but full screen is fine too */}
            <Disc3 className="h-5 w-5 !text-green-700 dark:!text-green-300" />
           <AlertTitle className="font-semibold text-lg">Winner!</AlertTitle>
           <AlertDescription className="text-2xl font-bold animate-pop-in mb-4">
@@ -262,4 +268,3 @@ export function NameWheel() {
     </div>
   );
 }
-
