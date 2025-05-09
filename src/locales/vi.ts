@@ -15,6 +15,9 @@ export const vi: LocaleStrings = {
   switchToEnglish: "Switch to English",
   switchToVietnamese: "Chuyển sang Tiếng Việt",
   navigationMenu: "Menu điều hướng",
+  toggleTheme: "Chuyển đổi giao diện",
+  switchToDarkMode: "Chuyển sang giao diện tối",
+  switchToLightMode: "Chuyển sang giao diện sáng",
 
   // HomePage
   welcomeMessage: "Chào mừng đến với",

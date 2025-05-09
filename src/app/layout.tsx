@@ -4,6 +4,7 @@ import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { AppLayout } from "@/components/layout/app-layout";
 import { LanguageProvider } from "@/context/language-context";
+import { ThemeProvider } from "next-themes";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["vietnamese", "latin"],
@@ -26,9 +27,16 @@ export default function RootLayout({
       <body
         className={`antialiased`} 
       >
-        <LanguageProvider>
-          <AppLayout>{children}</AppLayout>
-        </LanguageProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LanguageProvider>
+            <AppLayout>{children}</AppLayout>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

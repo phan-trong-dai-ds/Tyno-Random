@@ -21,6 +21,7 @@ import { Dice5, Home, Coins, Dices, Hash, Disc3, Github } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useLanguage } from "@/context/language-context";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -85,7 +86,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </div>
 
           {/* Right section of header */}
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher />
           </div>
         </header>

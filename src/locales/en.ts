@@ -19,6 +19,9 @@ export const en = {
   switchToEnglish: "Switch to English",
   switchToVietnamese: "Chuyển sang Tiếng Việt",
   navigationMenu: "Navigation Menu", // For sr-only title in Sheet
+  toggleTheme: "Toggle theme",
+  switchToDarkMode: "Switch to dark mode",
+  switchToLightMode: "Switch to light mode",
 
   // HomePage
   welcomeMessage: "Welcome to",
