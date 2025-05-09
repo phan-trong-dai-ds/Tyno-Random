@@ -2,7 +2,8 @@
 'use client';
 import { useLanguage } from '@/context/language-context';
 import { Button } from '@/components/ui/button';
-import { Languages } from 'lucide-react';
+import { USFlagIcon } from '@/components/icons/us-flag-icon';
+import { VietnamFlagIcon } from '@/components/icons/vietnam-flag-icon';
 
 export function LanguageSwitcher() {
   const { language, setLanguage, translations } = useLanguage();
@@ -20,9 +21,9 @@ export function LanguageSwitcher() {
       onClick={toggleLanguage}
       aria-label={buttonLabel}
       title={buttonLabel}
-      className="text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
     >
-      <Languages className="h-5 w-5" />
+      {language === 'en' ? <VietnamFlagIcon /> : <USFlagIcon />}
     </Button>
   );
 }
+

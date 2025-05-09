@@ -61,23 +61,32 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="p-4 flex items-center justify-between">
+        <SidebarFooter className="p-4 flex items-center justify-start"> {/* Removed justify-between */}
            <Button variant="ghost" className="flex-grow justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent" asChild>
             <Link href="https://github.com/firebase/studio-examples/tree/main/random-funhouse-nextjs" target="_blank">
               <Github className="mr-2 h-4 w-4" />
               <span>{translations.viewSource as string}</span>
             </Link>
           </Button>
-          <LanguageSwitcher />
+          {/* LanguageSwitcher removed from here */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="flex flex-col">
-        <header className="sticky top-0 z-10 flex h-14 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:hidden">
-          <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
-            <Dice5 className="w-6 h-6 text-primary" />
-            <span className="sr-only">{translations.appTitle as string}</span>
-          </Link>
-          <SidebarTrigger aria-label={translations.toggleSidebar as string} />
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm">
+          {/* Left section of header */}
+          <div className="flex items-center gap-2">
+            <SidebarTrigger aria-label={translations.toggleSidebar as string} className="md:hidden" /> {/* Only on mobile */}
+            <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
+              <Dice5 className="w-6 h-6 text-primary" />
+              <span className="hidden md:inline">{translations.appTitle as string}</span>
+              <span className="sr-only md:hidden">{translations.appTitle as string}</span>
+            </Link>
+          </div>
+
+          {/* Right section of header */}
+          <div className="flex items-center">
+            <LanguageSwitcher />
+          </div>
         </header>
         <main className="flex-1 overflow-y-auto">{children}</main>
         <Toaster />
@@ -85,3 +94,4 @@ export function AppLayout({ children }: { children: ReactNode }) {
     </SidebarProvider>
   );
 }
+
