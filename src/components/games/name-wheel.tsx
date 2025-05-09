@@ -245,14 +245,14 @@ export function NameWheel() {
             {selectedName}
           </AlertDescription>
           <div className="flex justify-end space-x-2 mt-2">
-            <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-100 dark:border-green-500 dark:text-green-300 dark:hover:bg-green-800/50">
+            <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-600 hover:text-white dark:border-green-500 dark:text-green-300 dark:hover:bg-green-600 dark:hover:text-white">
               <Trash2 className="mr-1 h-4 w-4" /> Remove
             </Button>
             <Button 
               variant="ghost" 
               size="sm" 
               onClick={handleCloseWinnerAlert} 
-              className="text-green-700 hover:bg-destructive hover:text-destructive-foreground dark:text-green-300 dark:hover:bg-destructive dark:hover:text-destructive-foreground"
+              className="text-green-700 hover:bg-green-600 hover:text-white dark:text-green-300 dark:hover:bg-green-600 dark:hover:text-white"
             >
               <X className="mr-1 h-4 w-4" /> Close
             </Button>
