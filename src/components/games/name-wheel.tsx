@@ -10,6 +10,7 @@ import { Disc3, VenetianMask, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-rea
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
+import { useLanguage } from "@/context/language-context";
 
 
 const WHEEL_SIZE = 320; 
@@ -37,6 +38,7 @@ interface Segment {
 }
 
 export function NameWheel() {
+  const { translations } = useLanguage();
   const [namesInput, setNamesInput] = useState("Alice\nBob\nCharlie\nDavid\nEve\nFrank\nGrace\nHenry");
   const [namesList, setNamesList] = useState<string[]>([]);
   const [selectedName, setSelectedName] = useState<string | null>(null);
@@ -121,15 +123,15 @@ export function NameWheel() {
   const handleSpinWheel = useCallback(() => {
     if (namesList.length === 0) {
       toast({
-        title: "No names to spin!",
-        description: "Please add some names to the list first.",
+        title: translations.noNamesToSpinErrorTitle as string,
+        description: translations.noNamesToSpinErrorDescription as string,
         variant: "destructive",
       });
       return;
     }
     setIsSpinning(true);
     setSelectedName(null);
-    setShowConfetti(false); // Ensure confetti is off before spin
+    setShowConfetti(false); 
 
     const randomSpins = Math.floor(Math.random() * 3) + 5;
     const randomStopAngle = Math.random() * 360;
@@ -146,19 +148,20 @@ export function NameWheel() {
       const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
       setShowConfetti(true); 
-      setTimeout(() => setShowConfetti(false), 7500); // Hide confetti after 7.5s (CSS animation 5s + max delay 2.5s)
+      setTimeout(() => setShowConfetti(false), 7500); 
     }, 5000);
-  }, [namesList, wheelRotation, toast]);
+  }, [namesList, wheelRotation, toast, translations]);
 
   const handleRemoveWinner = () => {
     if (!selectedName) return;
     const newNamesList = namesList.filter(name => name !== selectedName);
     setNamesInput(newNamesList.join("\n"));
+    const removedName = selectedName; // store before clearing
     setSelectedName(null); 
     setShowConfetti(false); 
     toast({
-      title: "Winner Removed",
-      description: `${selectedName} has been removed from the list.`,
+      title: translations.winnerRemovedToastTitle as string,
+      description: (translations.winnerRemovedToastDescription as (name: string) => string)(removedName),
       duration: 3000,
     });
   };
@@ -168,18 +171,21 @@ export function NameWheel() {
     setShowConfetti(false); 
   };
 
+  const namesEnteredText = typeof translations.namesEnteredSuffix === 'function' 
+    ? translations.namesEnteredSuffix(namesList.length) 
+    : `${namesList.length} ${translations.namesEnteredSuffix}`;
 
   return (
     <div className="space-y-6">
       {showConfetti && <Confetti />}
       <div>
         <div className="flex justify-between items-center mb-1">
-          <Label htmlFor="namesInput" className="text-sm font-medium">Enter Names (one per line)</Label>
+          <Label htmlFor="namesInput" className="text-sm font-medium">{translations.enterNamesLabel as string}</Label>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleShuffleNames} disabled={isSpinning || namesList.length < 2} aria-label="Shuffle names">
+            <Button variant="outline" size="sm" onClick={handleShuffleNames} disabled={isSpinning || namesList.length < 2} aria-label={translations.shuffleNamesButtonLabel as string}>
               <Shuffle className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={handleSortNames} disabled={isSpinning || namesList.length < 2} aria-label="Sort names">
+            <Button variant="outline" size="sm" onClick={handleSortNames} disabled={isSpinning || namesList.length < 2} aria-label={translations.sortNamesButtonLabel as string}>
               <ArrowDownAZ className="h-4 w-4" />
             </Button>
           </div>
@@ -190,10 +196,10 @@ export function NameWheel() {
           onChange={(e) => setNamesInput(e.target.value)}
           rows={6}
           className="mt-1"
-          placeholder="Alice\nBob\nCharlie..."
+          placeholder={translations.namesPlaceholder as string}
           disabled={isSpinning}
         />
-        <p className="text-xs text-muted-foreground mt-1">{namesList.length} name(s) entered.</p>
+        <p className="text-xs text-muted-foreground mt-1">{namesEnteredText}</p>
       </div>
 
       <div className="relative flex flex-col items-center space-y-4">
@@ -233,26 +239,26 @@ export function NameWheel() {
         ) : (
           <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed">
             <VenetianMask className="w-24 h-24 text-muted-foreground mb-4" />
-            <CardTitle className="text-muted-foreground">Add names to see the wheel!</CardTitle>
+            <CardTitle className="text-muted-foreground">{translations.addNamesPrompt as string}</CardTitle>
           </Card>
         )}
 
         <Button onClick={handleSpinWheel} disabled={isSpinning || namesList.length === 0} className="w-full max-w-xs py-3 text-lg">
           <Disc3 className="mr-2 h-6 w-6" />
-          {isSpinning ? "Spinning..." : "Spin the Wheel!"}
+          {isSpinning ? translations.spinningButton as string : translations.spinWheelButton as string}
         </Button>
       </div>
 
       {selectedName && !isSpinning && (
-        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden"> {/* Added relative and overflow-hidden for confetti containment if desired, but full screen is fine too */}
+        <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden"> 
            <Disc3 className="h-5 w-5 !text-green-700 dark:!text-green-300" />
-          <AlertTitle className="font-semibold text-lg">Winner!</AlertTitle>
+          <AlertTitle className="font-semibold text-lg">{translations.winnerAlertTitle as string}</AlertTitle>
           <AlertDescription className="text-2xl font-bold animate-pop-in mb-4">
             {selectedName}
           </AlertDescription>
           <div className="flex justify-end space-x-2 mt-2">
             <Button variant="outline" size="sm" onClick={handleRemoveWinner} className="border-green-600 text-green-700 hover:bg-green-600 hover:text-white dark:border-green-500 dark:text-green-300 dark:hover:bg-green-600 dark:hover:text-white">
-              <Trash2 className="mr-1 h-4 w-4" /> Remove
+              <Trash2 className="mr-1 h-4 w-4" /> {translations.removeWinnerButton as string}
             </Button>
             <Button
               variant="ghost"
@@ -260,7 +266,7 @@ export function NameWheel() {
               onClick={handleCloseWinnerAlert}
               className="text-green-700 dark:text-green-300 hover:bg-red-600 hover:text-white dark:hover:bg-red-700 dark:hover:text-white"
             >
-              <X className="mr-1 h-4 w-4" /> Close
+              <X className="mr-1 h-4 w-4" /> {translations.closeWinnerAlertButton as string}
             </Button>
           </div>
         </Alert>
@@ -268,4 +274,3 @@ export function NameWheel() {
     </div>
   );
 }
-

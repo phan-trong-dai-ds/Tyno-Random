@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Coins } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 interface CoinResult {
   id: string;
@@ -14,6 +15,7 @@ interface CoinResult {
 }
 
 export function CoinFlipper() {
+  const { translations } = useLanguage();
   const [numCoins, setNumCoins] = useState(1);
   const [results, setResults] = useState<CoinResult[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
@@ -21,14 +23,12 @@ export function CoinFlipper() {
 
   const handleFlipCoins = () => {
     if (numCoins <= 0 || numCoins > 50) {
-      // Basic validation, can be improved with react-hook-form
-      alert("Please enter a number of coins between 1 and 50.");
+      alert(translations.numCoinsValidationAlert as string);
       return;
     }
     setIsFlipping(true);
-    setResults([]); // Clear previous results immediately
+    setResults([]); 
 
-    // Stagger the appearance of coins
     const newResults: CoinResult[] = [];
     const newAnimationKeys: Record<string, number> = {};
 
@@ -38,7 +38,6 @@ export function CoinFlipper() {
       newAnimationKeys[coinId] = (animationKeys[coinId] || 0) + 1;
     }
     
-    // Set results after a short delay to allow clearing and then animation
     setTimeout(() => {
         setResults(newResults);
         setAnimationKeys(newAnimationKeys);
@@ -47,7 +46,6 @@ export function CoinFlipper() {
   };
 
   useEffect(() => {
-    // Initialize with one coin shown if results are empty and not flipping
     if (results.length === 0 && !isFlipping && numCoins > 0) {
        const initialCoinId = `coin-0`;
        setResults([{id: initialCoinId, value: 'H'}]);
@@ -61,7 +59,7 @@ export function CoinFlipper() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
         <div>
-          <Label htmlFor="numCoins" className="text-sm font-medium">Number of Coins (1-50)</Label>
+          <Label htmlFor="numCoins" className="text-sm font-medium">{translations.numCoinsLabel as string}</Label>
           <Input
             id="numCoins"
             type="number"
@@ -75,14 +73,14 @@ export function CoinFlipper() {
         </div>
         <Button onClick={handleFlipCoins} disabled={isFlipping} className="w-full sm:w-auto">
           <Coins className="mr-2 h-5 w-5" />
-          {isFlipping ? "Flipping..." : "Flip Coins"}
+          {isFlipping ? translations.flippingButton as string : translations.flipCoinsButton as string}
         </Button>
       </div>
 
       {results.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">Results</CardTitle>
+            <CardTitle className="text-xl">{translations.resultsTitle as string}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
@@ -97,14 +95,14 @@ export function CoinFlipper() {
                     {result.value}
                   </span>
                   <span className="text-xs text-muted-foreground mt-1">
-                    {result.value === "H" ? "Heads" : "Tails"}
+                    {result.value === "H" ? translations.heads as string : translations.tails as string}
                   </span>
                 </div>
               ))}
             </div>
           </CardContent>
            <CardFooter className="text-sm text-muted-foreground">
-            Total Heads: {results.filter(r => r.value === 'H').length}, Total Tails: {results.filter(r => r.value === 'T').length}
+            {translations.totalHeads as string}: {results.filter(r => r.value === 'H').length}, {translations.totalTails as string}: {results.filter(r => r.value === 'T').length}
           </CardFooter>
         </Card>
       )}

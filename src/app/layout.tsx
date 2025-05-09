@@ -4,10 +4,11 @@ import type { Metadata } from "next";
 // import { GeistMono } from "geist/font/mono"; // Commented out to fix module not found error
 import "./globals.css";
 import { AppLayout } from "@/components/layout/app-layout";
+import { LanguageProvider } from "@/context/language-context";
 
 export const metadata: Metadata = {
-  title: "Random Funhouse",
-  description: "A collection of fun random games to pass the time.",
+  title: "Random Funhouse", // Remains in English for SEO or can be dynamic later
+  description: "A collection of fun random games to pass the time.", // Remains in English
 };
 
 export default function RootLayout({
@@ -20,7 +21,9 @@ export default function RootLayout({
       <body
         className={`antialiased`} 
       >
-        <AppLayout>{children}</AppLayout>
+        <LanguageProvider>
+          <AppLayout>{children}</AppLayout>
+        </LanguageProvider>
       </body>
     </html>
   );

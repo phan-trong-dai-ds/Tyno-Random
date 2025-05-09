@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dices, Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 const DiceIcon = ({ value }: { value: number }) => {
   const icons = [Dice1, Dice2, Dice3, Dice4, Dice5, Dice6];
@@ -20,6 +21,7 @@ interface DiceResult {
 }
 
 export function DiceRoller() {
+  const { translations } = useLanguage();
   const [numDice, setNumDice] = useState(1);
   const [results, setResults] = useState<DiceResult[]>([]);
   const [isRolling, setIsRolling] = useState(false);
@@ -27,7 +29,7 @@ export function DiceRoller() {
 
   const handleRollDice = () => {
     if (numDice <= 0 || numDice > 20) {
-      alert("Please enter a number of dice between 1 and 20.");
+      alert(translations.numDiceValidationAlert as string);
       return;
     }
     setIsRolling(true);
@@ -62,7 +64,7 @@ export function DiceRoller() {
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
         <div>
-          <Label htmlFor="numDice" className="text-sm font-medium">Number of Dice (1-20)</Label>
+          <Label htmlFor="numDice" className="text-sm font-medium">{translations.numDiceLabel as string}</Label>
           <Input
             id="numDice"
             type="number"
@@ -76,14 +78,14 @@ export function DiceRoller() {
         </div>
         <Button onClick={handleRollDice} disabled={isRolling} className="w-full sm:w-auto">
           <Dices className="mr-2 h-5 w-5" />
-          {isRolling ? "Rolling..." : "Roll Dice"}
+          {isRolling ? translations.rollingButton as string : translations.rollDiceButton as string}
         </Button>
       </div>
 
       {results.length > 0 && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">Results</CardTitle>
+            <CardTitle className="text-xl">{translations.resultsTitle as string}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
@@ -102,7 +104,7 @@ export function DiceRoller() {
             </div>
           </CardContent>
           <CardFooter className="text-sm text-muted-foreground">
-             Total: {results.reduce((sum, r) => sum + r.value, 0)}
+             {translations.total as string}: {results.reduce((sum, r) => sum + r.value, 0)}
           </CardFooter>
         </Card>
       )}

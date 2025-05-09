@@ -1,49 +1,54 @@
 
+'use client';
+
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Coins, Dices, Hash, Disc3, ArrowRight } from 'lucide-react';
-
-const games = [
-  {
-    title: 'Coin Flipper',
-    description: 'Toss virtual coins and see if luck is on your side. How many heads will you get?',
-    href: '/coin-flipper',
-    icon: Coins,
-    dataAiHint: 'coin flip'
-  },
-  {
-    title: 'Dice Roller',
-    description: 'Roll one or more dice for your games or just for fun. What numbers will you roll?',
-    href: '/dice-roller',
-    icon: Dices,
-    dataAiHint: 'dice game'
-  },
-  {
-    title: 'Random Number Generator',
-    description: 'Pick a number out of thin air! Define your range and let fate decide.',
-    href: '/random-number',
-    icon: Hash,
-    dataAiHint: 'number abstract'
-  },
-  {
-    title: 'Name Wheel',
-    description: 'Spin the wheel to randomly select a name or item from your list. Perfect for giveaways!',
-    href: '/name-wheel',
-    icon: Disc3,
-    dataAiHint: 'prize wheel'
-  },
-];
+import { useLanguage } from '@/context/language-context';
 
 export default function HomePage() {
+  const { translations } = useLanguage();
+
+  const games = [
+    {
+      title: translations.coinFlipper as string,
+      description: translations.coinFlipper_home_description as string,
+      href: '/coin-flipper',
+      icon: Coins,
+      dataAiHint: 'coin flip'
+    },
+    {
+      title: translations.diceRoller as string,
+      description: translations.diceRoller_home_description as string,
+      href: '/dice-roller',
+      icon: Dices,
+      dataAiHint: 'dice game'
+    },
+    {
+      title: translations.randomNumber as string,
+      description: translations.randomNumber_home_description as string,
+      href: '/random-number',
+      icon: Hash,
+      dataAiHint: 'number abstract'
+    },
+    {
+      title: translations.nameWheel as string,
+      description: translations.nameWheel_home_description as string,
+      href: '/name-wheel',
+      icon: Disc3,
+      dataAiHint: 'prize wheel'
+    },
+  ];
+
   return (
     <div className="container mx-auto py-12 px-4 md:px-6">
       <header className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-foreground">
-          Welcome to <span className="text-primary">Random Funhouse</span>!
+          {translations.welcomeMessage as string} <span className="text-primary">{translations.appTitle as string}</span>!
         </h1>
         <p className="mt-4 text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-          Explore a collection of exciting random games. Perfect for making decisions, playing with friends, or just a bit of fun.
+          {translations.homePageSubtitle as string}
         </p>
       </header>
 
@@ -64,7 +69,7 @@ export default function HomePage() {
             <CardFooter className="p-6 bg-muted/50">
               <Button asChild className="w-full text-base py-3 group">
                 <Link href={game.href}>
-                  Play Now <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  {translations.playNow as string} <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
             </CardFooter>

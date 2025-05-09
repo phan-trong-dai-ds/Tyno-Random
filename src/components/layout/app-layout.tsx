@@ -19,17 +19,20 @@ import {
 import { Button } from "@/components/ui/button";
 import { Dice5, Home, Coins, Dices, Hash, Disc3, Github } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
-
-const navItems = [
-  { href: "/", label: "Home", icon: Home },
-  { href: "/coin-flipper", label: "Coin Flipper", icon: Coins },
-  { href: "/dice-roller", label: "Dice Roller", icon: Dices },
-  { href: "/random-number", label: "Random Number", icon: Hash },
-  { href: "/name-wheel", label: "Name Wheel", icon: Disc3 },
-];
+import { useLanguage } from "@/context/language-context";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
+  const { translations } = useLanguage();
+
+  const navItems = [
+    { href: "/", label: translations.home as string, icon: Home },
+    { href: "/coin-flipper", label: translations.coinFlipper as string, icon: Coins },
+    { href: "/dice-roller", label: translations.diceRoller as string, icon: Dices },
+    { href: "/random-number", label: translations.randomNumber as string, icon: Hash },
+    { href: "/name-wheel", label: translations.nameWheel as string, icon: Disc3 },
+  ];
 
   return (
     <SidebarProvider defaultOpen>
@@ -37,7 +40,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <SidebarHeader className="p-4">
           <Link href="/" className="flex items-center gap-2 text-lg font-semibold text-sidebar-foreground hover:text-sidebar-accent-foreground transition-colors">
             <Dice5 className="w-7 h-7 text-sidebar-primary" />
-            <span>Random Funhouse</span>
+            <span>{translations.appTitle as string}</span>
           </Link>
         </SidebarHeader>
         <SidebarContent>
@@ -58,22 +61,23 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="p-4">
-           <Button variant="ghost" className="w-full justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent" asChild>
+        <SidebarFooter className="p-4 flex items-center justify-between">
+           <Button variant="ghost" className="flex-grow justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent" asChild>
             <Link href="https://github.com/firebase/studio-examples/tree/main/random-funhouse-nextjs" target="_blank">
               <Github className="mr-2 h-4 w-4" />
-              View Source
+              <span>{translations.viewSource as string}</span>
             </Link>
           </Button>
+          <LanguageSwitcher />
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="flex flex-col">
         <header className="sticky top-0 z-10 flex h-14 items-center justify-between gap-4 border-b bg-background/80 px-4 backdrop-blur-sm md:hidden">
           <Link href="/" className="flex items-center gap-2 text-lg font-semibold">
             <Dice5 className="w-6 h-6 text-primary" />
-            <span className="sr-only">Random Funhouse</span>
+            <span className="sr-only">{translations.appTitle as string}</span>
           </Link>
-          <SidebarTrigger />
+          <SidebarTrigger aria-label={translations.toggleSidebar as string} />
         </header>
         <main className="flex-1 overflow-y-auto">{children}</main>
         <Toaster />

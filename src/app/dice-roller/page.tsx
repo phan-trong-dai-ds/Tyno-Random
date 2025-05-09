@@ -1,13 +1,17 @@
 
+'use client';
+
 import { DiceRoller } from "@/components/games/dice-roller";
 import { GamePageLayout } from "@/components/layout/game-page-layout";
 import { Dices } from "lucide-react";
+import { useLanguage } from "@/context/language-context";
 
 export default function DiceRollerPage() {
+  const { translations } = useLanguage();
   return (
     <GamePageLayout
-      title="Dice Roller"
-      description="Roll one or more standard 6-sided dice. Great for board games, RPGs, or when you just need a random number from 1 to 6."
+      title={translations.diceRoller_page_title as string}
+      description={translations.diceRoller_page_description as string}
       icon={<Dices className="w-10 h-10" />}
     >
       <DiceRoller />
