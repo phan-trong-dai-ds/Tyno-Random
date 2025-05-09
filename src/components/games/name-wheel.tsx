@@ -87,6 +87,7 @@ export function NameWheel() {
   const calculateTextPathD = (cx: number, cy: number, radius: number, startAngleDeg: number, endAngleDeg: number): string => {
     const textRadius = radius * 0.9;
 
+    // The -90 offset means 0deg input refers to the top of the circle for Math.cos/sin
     const textStartAngleRad = (startAngleDeg - 90 + 5) * Math.PI / 180; 
     const textEndAngleRad = (endAngleDeg - 90 - 5) * Math.PI / 180; 
 
@@ -95,8 +96,11 @@ export function NameWheel() {
     const x2 = cx + textRadius * Math.cos(textEndAngleRad);
     const y2 = cy + textRadius * Math.sin(textEndAngleRad);
     
+    // Determine if the segment is mostly in the "bottom half" (angles 90 to 270 in a 0-top system)
+    // to reverse text path direction for readability.
     const midAngleDeg = (startAngleDeg + endAngleDeg) / 2;
     const isBottomHalf = midAngleDeg > 90 && midAngleDeg < 270;
+
 
     if (isBottomHalf) {
       return `M ${x2} ${y2} A ${textRadius} ${textRadius} 0 0 0 ${x1} ${y1}`;
@@ -110,7 +114,7 @@ export function NameWheel() {
     const anglePerSegment = 360 / namesList.length;
 
     return namesList.map((name, index) => {
-      const startAngle = index * anglePerSegment;
+      const startAngle = index * anglePerSegment; // 0 degrees is at the top (12 o'clock) due to -90 in path calc
       const endAngle = (index + 1) * anglePerSegment;
       const segmentId = `segment-${index}`;
       return {
@@ -147,12 +151,15 @@ export function NameWheel() {
 
     setTimeout(() => {
       setIsSpinning(false);
-      const finalAngle = targetRotation % 360;
+      const finalAngle = targetRotation % 360; // Effective rotation of the wheel (clockwise)
       
-      // Pointer is at the left-middle (180 degrees in SVG rotational system where 0 is right, 90 is bottom, 180 left, 270 top).
-      // We need to find which segment's original angle landed under the 180-degree mark after rotation.
-      // The angle that landed at the 180-degree mark was originally at (180 - finalAngle) mod 360.
-      const normalizedAngle = (180 - (finalAngle % 360) + 360) % 360; 
+      // Pointer is visually at the left-middle (9 o'clock position).
+      // Segments are defined with 0 degrees at the top (12 o'clock) and angles increasing clockwise
+      // (due to the -90 degree offset in `calculateSegmentPath`).
+      // In this segment definition system, the left-middle pointer corresponds to 270 degrees.
+      // The wheel rotates by `finalAngle` (clockwise).
+      // So, the original segment angle that lands under the pointer is (270 - finalAngle) mod 360.
+      const normalizedAngle = (270 - finalAngle + 360) % 360;
       
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
@@ -193,7 +200,7 @@ export function NameWheel() {
   const pointerTipY = WHEEL_SIZE / 2;
   // Base of the pointer will be to the left of the tip
   const pointerBaseX = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
-  // Polygon points for a triangle pointing right
+  // Polygon points for a triangle pointing right (tip towards wheel)
   const pointerPoints = `${pointerBaseX},${pointerTipY - POINTER_WIDTH / 2} ${pointerBaseX},${pointerTipY + POINTER_WIDTH / 2} ${pointerTipX},${pointerTipY}`;
 
 
