@@ -6,12 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dices, Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from "lucide-react";
+import { Dices, Dice2, Dice3, Dice4, Dice5, Dice6 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { CustomDice1Icon } from "@/components/icons/custom-dice1-icon";
 
 const DiceIcon = ({ value }: { value: number }) => {
-  const icons = [Dice1, Dice2, Dice3, Dice4, Dice5, Dice6];
-  const IconComponent = icons[value - 1] || Dice1;
+  if (value === 1) {
+    return <CustomDice1Icon className="w-10 h-10 text-primary" />;
+  }
+  const icons = [CustomDice1Icon, Dice2, Dice3, Dice4, Dice5, Dice6]; // CustomDice1Icon is at index 0
+  const IconComponent = icons[value - 1] || CustomDice1Icon; // Fallback to CustomDice1Icon if value is out of typical 1-6 range
   return <IconComponent className="w-10 h-10 text-primary" />;
 };
 
