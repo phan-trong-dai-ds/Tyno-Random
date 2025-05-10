@@ -16,8 +16,7 @@ import {
   SidebarInset,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Button } from "@/components/ui/button";
-import { Dice5, Home, Coins, Dices, Hash, Disc3, Github } from "lucide-react";
+import { Dice5, Home, Coins, Dices, Hash, Disc3 } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useLanguage } from "@/context/language-context";
 import { LanguageSwitcher } from "./language-switcher";
@@ -63,14 +62,8 @@ export function AppLayout({ children }: { children: ReactNode }) {
             ))}
           </SidebarMenu>
         </SidebarContent>
-        <SidebarFooter className="p-4 flex items-center justify-start"> {/* Removed justify-between */}
-           <Button variant="ghost" className="flex-grow justify-start text-sidebar-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent" asChild>
-            <Link href="https://github.com/firebase/studio-examples/tree/main/random-funhouse-nextjs" target="_blank">
-              <Github className="mr-2 h-4 w-4" />
-              <span>{translations.viewSource as string}</span>
-            </Link>
-          </Button>
-          {/* LanguageSwitcher removed from here */}
+        <SidebarFooter className="p-4 flex items-center justify-start">
+          {/* 'View Source' button removed */}
         </SidebarFooter>
       </Sidebar>
       <SidebarInset className="flex flex-col">
@@ -108,3 +101,4 @@ export function AppLayout({ children }: { children: ReactNode }) {
     </SidebarProvider>
   );
 }
+
