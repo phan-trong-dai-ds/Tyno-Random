@@ -13,8 +13,8 @@ const beVietnamPro = Be_Vietnam_Pro({
 });
 
 export const metadata: Metadata = {
-  title: "Random Funhouse", // Remains in English for SEO or can be dynamic later
-  description: "A collection of fun random games to pass the time.", // Remains in English
+  title: "Tyno Random", 
+  description: "A collection of fun random games to pass the time.",
 };
 
 export default function RootLayout({

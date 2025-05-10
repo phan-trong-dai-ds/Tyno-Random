@@ -7,7 +7,7 @@ export type LocaleStrings = Record<string, TranslationValue>;
 
 export const en = {
   // AppLayout & General
-  appTitle: "Random Funhouse",
+  appTitle: "Tyno Random",
   appDescription: "A collection of fun random games to pass the time.",
   home: "Home",
   coinFlipper: "Coin Flipper",

@@ -3,7 +3,7 @@ import type { ActualLocaleStrings as LocaleStrings } from './en'; // Use ActualL
 
 export const vi: LocaleStrings = {
   // AppLayout & General
-  appTitle: "Nhà Vui Ngẫu Nhiên",
+  appTitle: "Tyno Random",
   appDescription: "Bộ sưu tập các trò chơi ngẫu nhiên vui nhộn để giải trí.",
   home: "Trang chủ",
   coinFlipper: "Tung đồng xu",
