@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { HandRock, Hand, Scissors as ScissorsIcon, Users, RotateCcw } from 'lucide-react'; // Renamed Scissors to ScissorsIcon
+import { Hand, Scissors as ScissorsIcon, Users, RotateCcw, Circle } from 'lucide-react'; // Replaced HandRock with Circle
 import { useLanguage } from '@/context/language-context';
 
 type Choice = 'rock' | 'paper' | 'scissors';
@@ -23,7 +23,7 @@ const initialPlayerState: PlayerState = {
 const choices: Choice[] = ['rock', 'paper', 'scissors'];
 
 const choiceIcons: Record<Choice, JSX.Element> = {
-  rock: <HandRock className="w-16 h-16 text-foreground" />,
+  rock: <Circle className="w-16 h-16 text-foreground" />, // Changed HandRock to Circle
   paper: <Hand className="w-16 h-16 text-foreground" />,
   scissors: <ScissorsIcon className="w-16 h-16 text-foreground" />,
 };
