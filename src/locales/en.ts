@@ -14,6 +14,7 @@ export const en = {
   diceRoller: "Dice Roller",
   randomNumber: "Random Number",
   nameWheel: "Name Wheel",
+  rockPaperScissors: "Rock Paper Scissors",
   viewSource: "View Source",
   toggleSidebar: "Toggle Sidebar",
   switchToEnglish: "Switch to English",
@@ -30,12 +31,13 @@ export const en = {
   diceRoller_home_description: "Roll one or more dice for your games or just for fun. What numbers will you roll?",
   randomNumber_home_description: "Pick a number out of thin air! Define your range and let fate decide.",
   nameWheel_home_description: "Spin the wheel to randomly select a name or item from your list. Perfect for giveaways!",
+  rockPaperScissors_home_description: "A classic game of choices. Rock, Paper, or Scissors - who will win?",
   playNow: "Play Now",
 
   // Coin Flipper Page & Component
   coinFlipper_page_title: "Coin Flipper",
   coinFlipper_page_description: "Toss one or more virtual coins. Will fortune favor you with heads or tails? Adjust the number of coins and see the random outcomes!",
-  numCoinsLabel: "Number of Coins (1-20)", // Updated max
+  numCoinsLabel: "Number of Coins (1-20)",
   flipCoinsButton: "Flip Coins",
   flippingButton: "Flipping...",
   resultsTitle: "Results",
@@ -43,7 +45,7 @@ export const en = {
   tails: "Tails",
   totalHeads: "Total Heads",
   totalTails: "Total Tails",
-  numCoinsValidationAlert: "Please enter a number of coins between 1 and 20.", // Updated max
+  numCoinsValidationAlert: "Please enter a number of coins between 1 and 20.",
 
   // Dice Roller Page & Component
   diceRoller_page_title: "Dice Roller",
@@ -51,7 +53,6 @@ export const en = {
   numDiceLabel: "Number of Dice (1-20)",
   rollDiceButton: "Roll Dice",
   rollingButton: "Rolling...",
-  // resultsTitle: "Results", // Re-use
   total: "Total",
   numDiceValidationAlert: "Please enter a number of dice between 1 and 20.",
 
@@ -83,8 +84,26 @@ export const en = {
   closeWinnerAlertButton: "Close",
   winnerRemovedToastTitle: "Winner Removed",
   winnerRemovedToastDescription: (name: string) => `${name} has been removed from the list.`,
+
+  // Rock Paper Scissors Page & Component
+  rockPaperScissors_page_title: "Rock Paper Scissors",
+  rockPaperScissors_page_description: "Play Rock Paper Scissors. Each player's move is randomized. Who will win this round?",
+  player1: "Player 1",
+  player2: "Player 2",
+  chooseButtonPlayer: (player: string) => `${player}: Make Move!`,
+  chosenButton: "Move Made",
+  choosingButton: "Choosing...",
+  rock: "Rock",
+  paper: "Paper",
+  scissors: "Scissors",
+  player1Wins: "Player 1 Wins!",
+  player2Wins: "Player 2 Wins!",
+  draw: "It's a Draw!",
+  playAgainButton: "Play Again",
+  waitingForPlayer: (player: string) => `Waiting for ${player}...`,
+  makeYourChoice: "Make your move!",
+  beatsText: "beats",
 };
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered
 export type ActualLocaleStrings = typeof en;
-

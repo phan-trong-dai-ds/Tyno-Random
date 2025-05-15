@@ -10,6 +10,7 @@ export const vi: LocaleStrings = {
   diceRoller: "Gieo xúc xắc",
   randomNumber: "Số ngẫu nhiên",
   nameWheel: "Vòng quay tên",
+  rockPaperScissors: "Oẳn Tù Tì",
   viewSource: "Xem mã nguồn",
   toggleSidebar: "Chuyển đổi thanh bên",
   switchToEnglish: "Switch to English",
@@ -26,12 +27,13 @@ export const vi: LocaleStrings = {
   diceRoller_home_description: "Gieo một hoặc nhiều xúc xắc cho trò chơi của bạn hoặc chỉ để cho vui. Bạn sẽ gieo được những số nào?",
   randomNumber_home_description: "Chọn một con số bất kỳ! Xác định phạm vi của bạn và để số phận quyết định.",
   nameWheel_home_description: "Quay vòng quay để chọn ngẫu nhiên một tên hoặc một món đồ từ danh sách của bạn. Hoàn hảo cho các chương trình tặng quà!",
+  rockPaperScissors_home_description: "Trò chơi lựa chọn cổ điển. Búa, Bao, hay Kéo - ai sẽ giành chiến thắng?",
   playNow: "Chơi ngay",
 
   // Coin Flipper Page & Component
   coinFlipper_page_title: "Tung đồng xu",
   coinFlipper_page_description: "Tung một hoặc nhiều đồng xu ảo. Liệu vận may sẽ cho bạn mặt ngửa hay mặt sấp? Điều chỉnh số lượng đồng xu và xem kết quả ngẫu nhiên!",
-  numCoinsLabel: "Số lượng xu (1-20)", // Updated max
+  numCoinsLabel: "Số lượng xu (1-20)",
   flipCoinsButton: "Tung xu",
   flippingButton: "Đang tung...",
   resultsTitle: "Kết quả",
@@ -39,7 +41,7 @@ export const vi: LocaleStrings = {
   tails: "Sấp",
   totalHeads: "Tổng số mặt ngửa",
   totalTails: "Tổng số mặt sấp",
-  numCoinsValidationAlert: "Vui lòng nhập số lượng xu từ 1 đến 20.", // Updated max
+  numCoinsValidationAlert: "Vui lòng nhập số lượng xu từ 1 đến 20.",
 
   // Dice Roller Page & Component
   diceRoller_page_title: "Gieo xúc xắc",
@@ -47,7 +49,6 @@ export const vi: LocaleStrings = {
   numDiceLabel: "Số lượng xúc xắc (1-20)",
   rollDiceButton: "Gieo xúc xắc",
   rollingButton: "Đang gieo...",
-  // resultsTitle: "Kết quả", // Re-use
   total: "Tổng cộng",
   numDiceValidationAlert: "Vui lòng nhập số lượng xúc xắc từ 1 đến 20.",
 
@@ -79,5 +80,23 @@ export const vi: LocaleStrings = {
   closeWinnerAlertButton: "Đóng",
   winnerRemovedToastTitle: "Đã xóa người thắng cuộc",
   winnerRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi danh sách.`,
-};
 
+  // Rock Paper Scissors Page & Component
+  rockPaperScissors_page_title: "Oẳn Tù Tì",
+  rockPaperScissors_page_description: "Chơi Oẳn Tù Tì. Lựa chọn của mỗi người chơi là ngẫu nhiên. Ai sẽ thắng vòng này?",
+  player1: "Người chơi 1",
+  player2: "Người chơi 2",
+  chooseButtonPlayer: (player: string) => `${player}: Ra chiêu!`,
+  chosenButton: "Đã ra chiêu",
+  choosingButton: "Đang chọn...",
+  rock: "Búa",
+  paper: "Bao",
+  scissors: "Kéo",
+  player1Wins: "Người chơi 1 thắng!",
+  player2Wins: "Người chơi 2 thắng!",
+  draw: "Hòa!",
+  playAgainButton: "Chơi lại",
+  waitingForPlayer: (player: string) => `Đang chờ ${player}...`,
+  makeYourChoice: "Hãy ra chiêu!",
+  beatsText: "thắng",
+};

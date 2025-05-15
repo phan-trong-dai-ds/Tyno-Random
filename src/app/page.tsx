@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Dices, Hash, Disc3, ArrowRight } from 'lucide-react';
+import { Coins, Dices, Hash, Disc3, ArrowRight, Swords } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 export default function HomePage() {
@@ -38,6 +38,13 @@ export default function HomePage() {
       href: '/name-wheel',
       icon: Disc3,
       dataAiHint: 'prize wheel'
+    },
+    {
+      title: translations.rockPaperScissors as string,
+      description: translations.rockPaperScissors_home_description as string,
+      href: '/rock-paper-scissors',
+      icon: Swords,
+      dataAiHint: 'rock paper scissors'
     },
   ];
 
