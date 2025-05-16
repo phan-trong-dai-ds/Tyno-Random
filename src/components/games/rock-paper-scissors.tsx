@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Hand, Users, RotateCcw, Grab } from 'lucide-react';
+import { Users, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 type Choice = 'rock' | 'paper' | 'scissors';
@@ -23,8 +23,8 @@ const initialPlayerState: PlayerState = {
 const choices: Choice[] = ['rock', 'paper', 'scissors'];
 
 const choiceIcons: Record<Choice, JSX.Element> = {
-  rock: <Grab className="w-16 h-16 text-foreground" />,
-  paper: <Hand className="w-16 h-16 text-foreground" />,
+  rock: <span className="text-6xl text-foreground" role="img" aria-label="raised fist">✊</span>,
+  paper: <span className="text-6xl text-foreground" role="img" aria-label="hand with fingers splayed">🖐️</span>,
   scissors: <span className="text-6xl text-foreground" role="img" aria-label="victory hand">✌️</span>,
 };
 
@@ -189,4 +189,3 @@ export function RockPaperScissors() {
     </div>
   );
 }
-
