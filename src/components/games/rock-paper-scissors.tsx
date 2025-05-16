@@ -23,9 +23,9 @@ const initialPlayerState: PlayerState = {
 const choices: Choice[] = ['rock', 'paper', 'scissors'];
 
 const choiceIcons: Record<Choice, JSX.Element> = {
-  rock: <span className="text-6xl text-foreground" role="img" aria-label="raised fist">✊</span>,
-  paper: <span className="text-6xl text-foreground" role="img" aria-label="hand with fingers splayed">🖐️</span>,
-  scissors: <span className="text-6xl text-foreground" role="img" aria-label="victory hand">✌️</span>,
+  rock: <span className="text-6xl text-foreground" role="img" aria-label="raised fist, light skin tone">✊🏻</span>,
+  paper: <span className="text-6xl text-foreground" role="img" aria-label="hand with fingers splayed, light skin tone">🖐🏻</span>,
+  scissors: <span className="text-6xl text-foreground" role="img" aria-label="victory hand, light skin tone">✌🏻</span>,
 };
 
 export function RockPaperScissors() {
