@@ -109,7 +109,7 @@ export const en = {
   // Blind Box Page & Component
   blindBox_page_title: "Blind Box",
   blindBox_page_description: "It's like a lucky dip! Add items to the box and see what you pull out. What surprise awaits?",
-  enterItemsLabel: "Enter Names (one per line)", // Changed from "Enter Items (one per line)"
+  enterItemsLabel: "Enter Names (one per line)",
   shuffleItemsButtonLabel: "Shuffle items",
   sortItemsButtonLabel: "Sort items",
   itemsPlaceholder: "Candy\nToy\nCoupon...",
@@ -119,8 +119,9 @@ export const en = {
   openingBoxButton: "Opening...",
   noItemsToOpenErrorTitle: "No items in the box!",
   noItemsToOpenErrorDescription: "Please add some items to the box first.",
-  itemDrawnAlertTitle: "You got:",
+  itemDrawnAlertTitle: "Congratulations! You got:",
   removeItemButton: "Remove",
+  closeWinnerAlertButton: "Close", // Added this key as it was used in blind-box.tsx but not defined.
   itemRemovedToastTitle: "Item Removed",
   itemRemovedToastDescription: (name: string) => `${name} has been removed from the box.`,
 };
