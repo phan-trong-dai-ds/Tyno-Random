@@ -62,7 +62,7 @@ export function BlindBox() { // Renamed component
       setShowConfetti(true);
       setTimeout(() => setShowConfetti(false), 7500);
       setIsOpening(false);
-    }, 3000); 
+    }, 3000);
   }, [itemsList, toast, translations]);
 
   const handleRemoveItem = () => {
@@ -85,7 +85,7 @@ export function BlindBox() { // Renamed component
     setShowConfetti(false);
     setAnimationState('idle');
   };
-  
+
   const itemsEnteredText = typeof translations.itemsEnteredSuffix === 'function'
   ? translations.itemsEnteredSuffix(itemsList.length)
   : `${itemsList.length} ${translations.itemsEnteredSuffix}`;
@@ -118,21 +118,21 @@ export function BlindBox() { // Renamed component
       </div>
 
       <div className="relative flex flex-col items-center space-y-4">
-        <div 
+        <div
           className={cn(
-            "p-6 rounded-lg shadow-lg",
+            "p-6 rounded-lg", // Removed shadow-lg
             animationState === 'shaking' && "animate-shake-box"
           )}
-          style={{ perspective: '1000px' }} 
+          style={{ perspective: '1000px' }}
         >
-          <Gift 
+          <Gift
             className={cn(
               "w-32 h-32 text-primary transition-transform duration-300 ease-in-out",
               animationState === 'opened' && selectedItem ? "transform scale-110" : ""
-            )} 
+            )}
           />
         </div>
-        
+
         {itemsList.length === 0 && animationState === 'idle' && (
            <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed -mt-44 mb-4">
             <Gift className="w-24 h-24 text-muted-foreground mb-4 opacity-50" />
