@@ -105,7 +105,7 @@ export const vi: LocaleStrings = {
   // Blind Box Page & Component (Now "Xé túi mù" in Vietnamese)
   blindBox_page_title: "Xé túi mù", // Changed from "Mở hộp mù"
   blindBox_page_description: "Giống như trò rút thăm may mắn! Thêm các vật phẩm vào túi và xem bạn rút được gì. Bất ngờ nào đang chờ đợi?", // Changed "hộp" to "túi"
-  enterItemsLabel: "Nhập vật phẩm (mỗi vật phẩm một dòng)",
+  enterItemsLabel: "Nhập tên (mỗi tên một dòng)",
   shuffleItemsButtonLabel: "Trộn vật phẩm",
   sortItemsButtonLabel: "Sắp xếp vật phẩm",
   itemsPlaceholder: "Kẹo\nĐồ chơi\nPhiếu giảm giá...",
