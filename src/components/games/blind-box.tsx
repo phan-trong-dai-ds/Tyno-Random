@@ -6,14 +6,14 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gift, Shuffle, ArrowDownAZ, Trash2, X } from "lucide-react";
+import { Gift, Shuffle, ArrowDownAZ, Trash2, X, PackageOpen } from "lucide-react"; // Added PackageOpen
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
 import { useLanguage } from "@/context/language-context";
 import { cn } from "@/lib/utils";
 
-export function BlindBox() { // Renamed component
+export function BlindBox() {
   const { translations } = useLanguage();
   const [itemsInput, setItemsInput] = useState("Candy\nToy\nCoupon\nSticker\nKeychain");
   const [itemsList, setItemsList] = useState<string[]>([]);
@@ -40,11 +40,11 @@ export function BlindBox() { // Renamed component
     setItemsInput(sorted.join("\n"));
   };
 
-  const handleOpenBox = useCallback(() => { // Renamed from handleOpenBag
+  const handleOpenBox = useCallback(() => {
     if (itemsList.length === 0) {
       toast({
-        title: translations.noItemsToOpenErrorTitle as string, // Value updated in locale file
-        description: translations.noItemsToOpenErrorDescription as string, // Value updated in locale file
+        title: translations.noItemsToOpenErrorTitle as string,
+        description: translations.noItemsToOpenErrorDescription as string,
         variant: "destructive",
       });
       return;
@@ -74,8 +74,8 @@ export function BlindBox() { // Renamed component
     setShowConfetti(false);
     setAnimationState('idle');
     toast({
-      title: translations.itemRemovedToastTitle as string, // Generic
-      description: (translations.itemRemovedToastDescription as (name: string) => string)(removedItem), // Value updated in locale file
+      title: translations.itemRemovedToastTitle as string,
+      description: (translations.itemRemovedToastDescription as (name: string) => string)(removedItem),
       duration: 3000,
     });
   };
@@ -120,36 +120,43 @@ export function BlindBox() { // Renamed component
       <div className="relative flex flex-col items-center space-y-4">
         <div
           className={cn(
-            "p-6 rounded-lg", // Removed shadow-lg
-            animationState === 'shaking' && "animate-shake-box"
+            "p-6 rounded-lg flex items-center justify-center", // Ensure centering for different icon sizes
+            animationState === 'shaking' && animationState !== 'opened' && "animate-shake-box" // Only shake if not yet opened
           )}
-          style={{ perspective: '1000px' }}
+          style={{ perspective: '1000px', minHeight: '176px' }} // Approx height of w-32 h-32 icon + p-6
         >
-          <Gift
-            className={cn(
-              "w-32 h-32 text-primary transition-transform duration-300 ease-in-out",
-              animationState === 'opened' && selectedItem ? "transform scale-110" : ""
-            )}
-          />
+          {animationState === 'opened' && selectedItem ? (
+            <PackageOpen
+              className="w-32 h-32 text-primary animate-pop-in"
+            />
+          ) : (
+            <Gift
+              className="w-32 h-32 text-primary"
+            />
+          )}
         </div>
 
         {itemsList.length === 0 && animationState === 'idle' && (
-           <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed -mt-44 mb-4">
+           <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed -mt-44 mb-4"> {/* Consider adjusting -mt-44 if layout shifts */}
             <Gift className="w-24 h-24 text-muted-foreground mb-4 opacity-50" />
-            <CardTitle className="text-muted-foreground">{translations.addItemsPrompt as string}</CardTitle> {/* Value updated in locale file */}
+            <CardTitle className="text-muted-foreground">{translations.addItemsPrompt as string}</CardTitle>
           </Card>
         )}
 
 
-        <Button onClick={handleOpenBox} disabled={isOpening || itemsList.length === 0} className="w-full max-w-xs py-3 text-lg"> {/* Renamed handler, updated translation key */}
+        <Button onClick={handleOpenBox} disabled={isOpening || itemsList.length === 0} className="w-full max-w-xs py-3 text-lg">
           <Gift className="mr-2 h-6 w-6" />
-          {isOpening ? translations.openingBoxButton as string : translations.openBoxButton as string} {/* Updated translation keys */}
+          {isOpening ? translations.openingBoxButton as string : translations.openBoxButton as string}
         </Button>
       </div>
 
       {selectedItem && !isOpening && (
         <Alert className="mt-6 bg-green-50 border-green-500 text-green-700 dark:bg-green-900/30 dark:border-green-700 dark:text-green-300 relative overflow-hidden">
-          <Gift className="h-5 w-5 !text-green-700 dark:!text-green-300" />
+          {animationState === 'opened' ? (
+            <PackageOpen className="h-5 w-5 !text-green-700 dark:!text-green-300" />
+          ) : (
+            <Gift className="h-5 w-5 !text-green-700 dark:!text-green-300" />
+          )}
           <AlertTitle className="font-semibold text-lg">{translations.itemDrawnAlertTitle as string}</AlertTitle>
           <AlertDescription className="text-2xl font-bold animate-pop-in mb-4">
             {selectedItem}
