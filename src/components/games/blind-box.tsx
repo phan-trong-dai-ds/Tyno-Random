@@ -120,10 +120,10 @@ export function BlindBox() {
       <div className="relative flex flex-col items-center space-y-4">
         <div
           className={cn(
-            "p-6 rounded-lg flex items-center justify-center", // Ensure centering for different icon sizes
-            animationState === 'shaking' && animationState !== 'opened' && "animate-shake-box" // Only shake if not yet opened
+            "p-6 rounded-lg flex items-center justify-center", 
+            animationState === 'shaking' && "animate-shake-box"
           )}
-          style={{ perspective: '1000px', minHeight: '176px' }} // Approx height of w-32 h-32 icon + p-6
+          style={{ perspective: '1000px', minHeight: '176px' }} 
         >
           {animationState === 'opened' && selectedItem ? (
             <PackageOpen
@@ -137,7 +137,7 @@ export function BlindBox() {
         </div>
 
         {itemsList.length === 0 && animationState === 'idle' && (
-           <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed -mt-44 mb-4"> {/* Consider adjusting -mt-44 if layout shifts */}
+           <Card className="w-full max-w-xs aspect-square flex flex-col items-center justify-center bg-muted/50 border-dashed -mt-44 mb-4">
             <Gift className="w-24 h-24 text-muted-foreground mb-4 opacity-50" />
             <CardTitle className="text-muted-foreground">{translations.addItemsPrompt as string}</CardTitle>
           </Card>
