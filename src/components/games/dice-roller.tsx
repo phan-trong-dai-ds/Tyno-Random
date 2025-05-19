@@ -17,8 +17,8 @@ const DiceIcon = ({ value }: { value: number }) => {
   if (value === 1) {
     return <CustomDice1Icon className={iconClassName} />;
   }
-  const icons = [CustomDice1Icon, Dice2, Dice3, Dice4, Dice5, Dice6]; // CustomDice1Icon is at index 0
-  const IconComponent = icons[value - 1] || CustomDice1Icon; // Fallback to CustomDice1Icon if value is out of typical 1-6 range
+  const icons = [CustomDice1Icon, Dice2, Dice3, Dice4, Dice5, Dice6];
+  const IconComponent = icons[value - 1] || CustomDice1Icon;
   return <IconComponent className={iconClassName} />;
 };
 
@@ -34,11 +34,21 @@ export function DiceRoller() {
   const [isRolling, setIsRolling] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
 
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error("Error playing sound:", error);
+      // Potentially inform user if sound file is missing or there's an issue
+    });
+  };
+
   const handleRollDice = () => {
     if (numDice <= 0 || numDice > 20) {
       alert(translations.numDiceValidationAlert as string);
       return;
     }
+
+    playSound('/sounds/dice-roll.mp3');
     setIsRolling(true);
     setResults([]);
 
@@ -55,7 +65,7 @@ export function DiceRoller() {
         setResults(newResults);
         setAnimationKeys(newAnimationKeys);
         setIsRolling(false);
-    }, 100);
+    }, 100); // Short delay to allow sound to start
   };
   
   useEffect(() => {
@@ -118,4 +128,3 @@ export function DiceRoller() {
     </div>
   );
 }
-

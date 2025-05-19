@@ -22,11 +22,22 @@ export function CoinFlipper() {
   const [isFlipping, setIsFlipping] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
 
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error("Error playing sound:", error);
+      // You could inform the user here if the sound file is missing or there's an issue.
+      // For example, using a toast notification.
+    });
+  };
+
   const handleFlipCoins = () => {
-    if (numCoins <= 0 || numCoins > 20) { // Updated max to 20
+    if (numCoins <= 0 || numCoins > 20) {
       alert(translations.numCoinsValidationAlert as string);
       return;
     }
+    
+    playSound('/sounds/coin-flip.mp3');
     setIsFlipping(true);
     setResults([]); 
 
@@ -43,18 +54,17 @@ export function CoinFlipper() {
         setResults(newResults);
         setAnimationKeys(newAnimationKeys);
         setIsFlipping(false);
-    }, 100);
+    }, 100); // Short delay to allow sound to start, can be adjusted
   };
 
   useEffect(() => {
-    if (results.length === 0 && !isFlipping && numCoins > 0 && numCoins <= 20) { // Updated max to 20
+    if (results.length === 0 && !isFlipping && numCoins > 0 && numCoins <= 20) {
        const initialCoinId = `coin-0`;
-       // Set a default result (e.g., Heads) for the first coin if results are empty
        setResults([{id: initialCoinId, value: 'H'}]);
        setAnimationKeys(prev => ({...prev, [initialCoinId]: (prev[initialCoinId] || 0) + 1}));
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [numCoins]); // Re-run if numCoins changes to initialize for a single coin if list becomes empty
+  }, [numCoins]);
 
 
   return (
@@ -66,9 +76,9 @@ export function CoinFlipper() {
             id="numCoins"
             type="number"
             value={numCoins}
-            onChange={(e) => setNumCoins(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))} // Updated max to 20
+            onChange={(e) => setNumCoins(Math.max(1, Math.min(20, parseInt(e.target.value) || 1)))}
             min="1"
-            max="20" // Updated max to 20
+            max="20"
             className="mt-1"
             disabled={isFlipping}
           />
@@ -83,7 +93,7 @@ export function CoinFlipper() {
         <div className="mt-6">
           <h2 className="text-xl font-semibold mb-3 text-foreground">{translations.resultsTitle as string}</h2>
           <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
-            <div className="flex flex-wrap gap-4 justify-center"> {/* Increased gap for better spacing */}
+            <div className="flex flex-wrap gap-4 justify-center">
               {results.map((result, index) => (
                 <div
                   key={result.id + (animationKeys[result.id] || 0)}
@@ -112,4 +122,3 @@ export function CoinFlipper() {
     </div>
   );
 }
-
