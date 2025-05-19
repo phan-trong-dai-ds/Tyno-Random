@@ -15,6 +15,7 @@ export const en = {
   randomNumber: "Random Number",
   nameWheel: "Name Wheel",
   rockPaperScissors: "Rock Paper Scissors",
+  blindBag: "Blind Bag",
   viewSource: "View Source",
   toggleSidebar: "Toggle Sidebar",
   switchToEnglish: "Switch to English",
@@ -32,6 +33,7 @@ export const en = {
   randomNumber_home_description: "Pick a number out of thin air! Define your range and let fate decide.",
   nameWheel_home_description: "Spin the wheel to randomly select a name or item from your list. Perfect for giveaways!",
   rockPaperScissors_home_description: "A classic game of choices. Rock, Paper, or Scissors - who will win?",
+  blindBag_home_description: "Pick a surprise! Enter items and randomly draw one from the bag. What will you get?",
   playNow: "Play Now",
 
   // Coin Flipper Page & Component
@@ -103,6 +105,25 @@ export const en = {
   waitingForPlayer: (player: string) => `Waiting for ${player}...`,
   makeYourChoice: "Make your move!",
   beatsText: "beats",
+
+  // Blind Bag Page & Component
+  blindBag_page_title: "Blind Bag",
+  blindBag_page_description: "It's like a lucky dip! Add items to the bag and see what you pull out. What surprise awaits?",
+  enterItemsLabel: "Enter Items (one per line)",
+  shuffleItemsButtonLabel: "Shuffle items",
+  sortItemsButtonLabel: "Sort items",
+  itemsPlaceholder: "Candy\nToy\nCoupon...",
+  itemsEnteredSuffix: (count: number) => `${count} item(s) entered.`,
+  addItemsPrompt: "Add items to the bag!",
+  openBagButton: "Open Bag",
+  openingBagButton: "Opening...",
+  noItemsToOpenErrorTitle: "No items in the bag!",
+  noItemsToOpenErrorDescription: "Please add some items to the bag first.",
+  itemDrawnAlertTitle: "You got:",
+  removeItemButton: "Remove Item", // Can be the same as removeWinnerButton if generic enough
+  // closeItemAlertButton: "Close", // Can reuse closeWinnerAlertButton
+  itemRemovedToastTitle: "Item Removed",
+  itemRemovedToastDescription: (name: string) => `${name} has been removed from the bag.`,
 };
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered

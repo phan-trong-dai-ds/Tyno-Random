@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Dices, Hash, Disc3, ArrowRight, Swords } from 'lucide-react';
+import { Coins, Dices, Hash, Disc3, ArrowRight, Swords, Gift } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 export default function HomePage() {
@@ -46,6 +46,13 @@ export default function HomePage() {
       icon: Swords,
       dataAiHint: 'rock paper scissors'
     },
+    {
+      title: translations.blindBag as string,
+      description: translations.blindBag_home_description as string,
+      href: '/blind-bag',
+      icon: Gift,
+      dataAiHint: 'gift box surprise'
+    },
   ];
 
   return (
@@ -59,7 +66,7 @@ export default function HomePage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {games.map((game) => (
           <Card key={game.title} className="flex flex-col justify-between transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl rounded-lg overflow-hidden">
             <CardHeader className="items-center text-center p-6">

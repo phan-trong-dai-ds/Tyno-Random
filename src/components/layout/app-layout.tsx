@@ -16,7 +16,7 @@ import {
   SidebarInset,
   SidebarFooter,
 } from "@/components/ui/sidebar";
-import { Dice5, Home, Coins, Dices, Hash, Disc3, Swords } from "lucide-react";
+import { Dice5, Home, Coins, Dices, Hash, Disc3, Swords, Gift } from "lucide-react";
 import { Toaster } from "@/components/ui/toaster";
 import { useLanguage } from "@/context/language-context";
 import { LanguageSwitcher } from "./language-switcher";
@@ -34,6 +34,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { href: "/random-number", label: translations.randomNumber as string, icon: Hash },
     { href: "/name-wheel", label: translations.nameWheel as string, icon: Disc3 },
     { href: "/rock-paper-scissors", label: translations.rockPaperScissors as string, icon: Swords },
+    { href: "/blind-bag", label: translations.blindBag as string, icon: Gift },
   ];
 
   return (
