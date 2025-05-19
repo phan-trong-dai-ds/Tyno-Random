@@ -109,7 +109,7 @@ export const en = {
   // Blind Box Page & Component
   blindBox_page_title: "Blind Box",
   blindBox_page_description: "It's like a lucky dip! Add items to the box and see what you pull out. What surprise awaits?",
-  enterItemsLabel: "Enter Items (one per line)",
+  enterItemsLabel: "Enter Names (one per line)", // Changed from "Enter Items (one per line)"
   shuffleItemsButtonLabel: "Shuffle items",
   sortItemsButtonLabel: "Sort items",
   itemsPlaceholder: "Candy\nToy\nCoupon...",
