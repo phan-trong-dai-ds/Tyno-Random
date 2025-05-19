@@ -120,7 +120,7 @@ export const en = {
   noItemsToOpenErrorTitle: "No items in the box!",
   noItemsToOpenErrorDescription: "Please add some items to the box first.",
   itemDrawnAlertTitle: "You got:",
-  removeItemButton: "Remove Item",
+  removeItemButton: "Remove",
   itemRemovedToastTitle: "Item Removed",
   itemRemovedToastDescription: (name: string) => `${name} has been removed from the box.`,
 };
