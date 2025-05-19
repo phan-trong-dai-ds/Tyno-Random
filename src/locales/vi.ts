@@ -11,7 +11,7 @@ export const vi: LocaleStrings = {
   randomNumber: "Số ngẫu nhiên",
   nameWheel: "Vòng quay tên",
   rockPaperScissors: "Oẳn Tù Tì",
-  blindBox: "Xé túi mù", // Ensures this is "Xé túi mù"
+  blindBox: "Xé túi mù",
   viewSource: "Xem mã nguồn",
   toggleSidebar: "Chuyển đổi thanh bên",
   switchToEnglish: "Switch to English",
@@ -115,8 +115,9 @@ export const vi: LocaleStrings = {
   openingBoxButton: "Đang xé...",
   noItemsToOpenErrorTitle: "Không có gì trong túi!",
   noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào túi trước.",
-  itemDrawnAlertTitle: "Bạn đã rút được:",
+  itemDrawnAlertTitle: "Chúc mừng bạn đã xé trúng:",
   removeItemButton: "Xóa vật phẩm",
   itemRemovedToastTitle: "Vật phẩm đã được xóa",
   itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`,
 };
+
