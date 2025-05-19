@@ -15,7 +15,7 @@ export const en = {
   randomNumber: "Random Number",
   nameWheel: "Name Wheel",
   rockPaperScissors: "Rock Paper Scissors",
-  blindBag: "Blind Bag",
+  blindBox: "Blind Box", // Changed from blindBag
   viewSource: "View Source",
   toggleSidebar: "Toggle Sidebar",
   switchToEnglish: "Switch to English",
@@ -33,7 +33,7 @@ export const en = {
   randomNumber_home_description: "Pick a number out of thin air! Define your range and let fate decide.",
   nameWheel_home_description: "Spin the wheel to randomly select a name or item from your list. Perfect for giveaways!",
   rockPaperScissors_home_description: "A classic game of choices. Rock, Paper, or Scissors - who will win?",
-  blindBag_home_description: "Pick a surprise! Enter items and randomly draw one from the bag. What will you get?",
+  blindBox_home_description: "Pick a surprise! Enter items and randomly draw one from the box. What will you get?", // Changed from blindBag_home_description
   playNow: "Play Now",
 
   // Coin Flipper Page & Component
@@ -106,24 +106,23 @@ export const en = {
   makeYourChoice: "Make your move!",
   beatsText: "beats",
 
-  // Blind Bag Page & Component
-  blindBag_page_title: "Blind Bag",
-  blindBag_page_description: "It's like a lucky dip! Add items to the bag and see what you pull out. What surprise awaits?",
-  enterItemsLabel: "Enter Items (one per line)",
-  shuffleItemsButtonLabel: "Shuffle items",
-  sortItemsButtonLabel: "Sort items",
-  itemsPlaceholder: "Candy\nToy\nCoupon...",
-  itemsEnteredSuffix: (count: number) => `${count} item(s) entered.`,
-  addItemsPrompt: "Add items to the bag!",
-  openBagButton: "Open Bag",
-  openingBagButton: "Opening...",
-  noItemsToOpenErrorTitle: "No items in the bag!",
-  noItemsToOpenErrorDescription: "Please add some items to the bag first.",
-  itemDrawnAlertTitle: "You got:",
-  removeItemButton: "Remove Item", // Can be the same as removeWinnerButton if generic enough
-  // closeItemAlertButton: "Close", // Can reuse closeWinnerAlertButton
-  itemRemovedToastTitle: "Item Removed",
-  itemRemovedToastDescription: (name: string) => `${name} has been removed from the bag.`,
+  // Blind Box Page & Component (Updated from Blind Bag)
+  blindBox_page_title: "Blind Box", // Changed from blindBag_page_title
+  blindBox_page_description: "It's like a lucky dip! Add items to the box and see what you pull out. What surprise awaits?", // Changed from blindBag_page_description
+  enterItemsLabel: "Enter Items (one per line)", // Key kept, value is generic enough
+  shuffleItemsButtonLabel: "Shuffle items", // Key kept, value is generic
+  sortItemsButtonLabel: "Sort items", // Key kept, value is generic
+  itemsPlaceholder: "Candy\nToy\nCoupon...", // Key kept, value is generic
+  itemsEnteredSuffix: (count: number) => `${count} item(s) entered.`, // Key kept
+  addItemsPrompt: "Add items to the box!", // Key kept, value updated
+  openBoxButton: "Open Box", // New key
+  openingBoxButton: "Opening...", // New key (value same but for box context)
+  noItemsToOpenErrorTitle: "No items in the box!", // Key kept, value updated
+  noItemsToOpenErrorDescription: "Please add some items to the box first.", // Key kept, value updated
+  itemDrawnAlertTitle: "You got:", // Key kept, value is generic
+  removeItemButton: "Remove Item", // Key kept, value is generic
+  itemRemovedToastTitle: "Item Removed", // Key kept, value is generic
+  itemRemovedToastDescription: (name: string) => `${name} has been removed from the box.`, // Key kept, value updated
 };
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered

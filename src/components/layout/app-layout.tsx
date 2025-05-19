@@ -34,7 +34,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { href: "/random-number", label: translations.randomNumber as string, icon: Hash },
     { href: "/name-wheel", label: translations.nameWheel as string, icon: Disc3 },
     { href: "/rock-paper-scissors", label: translations.rockPaperScissors as string, icon: Swords },
-    { href: "/blind-bag", label: translations.blindBag as string, icon: Gift },
+    { href: "/blind-box", label: translations.blindBox as string, icon: Gift }, // Changed from blind-bag and translations.blindBag
   ];
 
   return (

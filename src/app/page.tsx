@@ -47,9 +47,9 @@ export default function HomePage() {
       dataAiHint: 'rock paper scissors'
     },
     {
-      title: translations.blindBag as string,
-      description: translations.blindBag_home_description as string,
-      href: '/blind-bag',
+      title: translations.blindBox as string, // Changed from blindBag
+      description: translations.blindBox_home_description as string, // Changed from blindBag_home_description
+      href: '/blind-box', // Changed from /blind-bag
       icon: Gift,
       dataAiHint: 'gift box surprise'
     },

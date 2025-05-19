@@ -11,7 +11,7 @@ export const vi: LocaleStrings = {
   randomNumber: "Số ngẫu nhiên",
   nameWheel: "Vòng quay tên",
   rockPaperScissors: "Oẳn Tù Tì",
-  blindBag: "Xé túi mù",
+  blindBox: "Mở hộp mù", // Changed from blindBag
   viewSource: "Xem mã nguồn",
   toggleSidebar: "Chuyển đổi thanh bên",
   switchToEnglish: "Switch to English",
@@ -29,7 +29,7 @@ export const vi: LocaleStrings = {
   randomNumber_home_description: "Chọn một con số bất kỳ! Xác định phạm vi của bạn và để số phận quyết định.",
   nameWheel_home_description: "Quay vòng quay để chọn ngẫu nhiên một tên hoặc một món đồ từ danh sách của bạn. Hoàn hảo cho các chương trình tặng quà!",
   rockPaperScissors_home_description: "Trò chơi lựa chọn cổ điển. Búa, Bao, hay Kéo - ai sẽ giành chiến thắng?",
-  blindBag_home_description: "Chọn một điều bất ngờ! Nhập các món đồ và rút ngẫu nhiên một món từ trong túi. Bạn sẽ nhận được gì?",
+  blindBox_home_description: "Chọn một điều bất ngờ! Nhập các món đồ và rút ngẫu nhiên một món từ trong hộp. Bạn sẽ nhận được gì?", // Changed from blindBag_home_description
   playNow: "Chơi ngay",
 
   // Coin Flipper Page & Component
@@ -102,22 +102,21 @@ export const vi: LocaleStrings = {
   makeYourChoice: "Hãy ra chiêu!",
   beatsText: "thắng",
 
-  // Blind Bag Page & Component
-  blindBag_page_title: "Xé túi mù",
-  blindBag_page_description: "Giống như trò rút thăm may mắn! Thêm các vật phẩm vào túi và xem bạn rút được gì. Bất ngờ nào đang chờ đợi?",
-  enterItemsLabel: "Nhập vật phẩm (mỗi vật phẩm một dòng)",
-  shuffleItemsButtonLabel: "Trộn vật phẩm",
-  sortItemsButtonLabel: "Sắp xếp vật phẩm",
-  itemsPlaceholder: "Kẹo\nĐồ chơi\nPhiếu giảm giá...",
-  itemsEnteredSuffix: (count: number) => `${count} vật phẩm đã nhập.`,
-  addItemsPrompt: "Thêm vật phẩm vào túi!",
-  openBagButton: "Mở túi",
-  openingBagButton: "Đang mở...",
-  noItemsToOpenErrorTitle: "Không có gì trong túi!",
-  noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào túi trước.",
-  itemDrawnAlertTitle: "Bạn đã rút được:",
-  removeItemButton: "Xóa vật phẩm",
-  // closeItemAlertButton: "Đóng", // Reuse
-  itemRemovedToastTitle: "Vật phẩm đã được xóa",
-  itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`,
+  // Blind Box Page & Component (Updated from Blind Bag)
+  blindBox_page_title: "Mở hộp mù", // Changed from blindBag_page_title
+  blindBox_page_description: "Giống như trò rút thăm may mắn! Thêm các vật phẩm vào hộp và xem bạn rút được gì. Bất ngờ nào đang chờ đợi?", // Changed from blindBag_page_description
+  enterItemsLabel: "Nhập vật phẩm (mỗi vật phẩm một dòng)", // Key kept
+  shuffleItemsButtonLabel: "Trộn vật phẩm", // Key kept
+  sortItemsButtonLabel: "Sắp xếp vật phẩm", // Key kept
+  itemsPlaceholder: "Kẹo\nĐồ chơi\nPhiếu giảm giá...", // Key kept
+  itemsEnteredSuffix: (count: number) => `${count} vật phẩm đã nhập.`, // Key kept
+  addItemsPrompt: "Thêm vật phẩm vào hộp!", // Key kept, value updated
+  openBoxButton: "Mở hộp", // New key
+  openingBoxButton: "Đang mở...", // New key
+  noItemsToOpenErrorTitle: "Không có gì trong hộp!", // Key kept, value updated
+  noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào hộp trước.", // Key kept, value updated
+  itemDrawnAlertTitle: "Bạn đã rút được:", // Key kept
+  removeItemButton: "Xóa vật phẩm", // Key kept
+  itemRemovedToastTitle: "Vật phẩm đã được xóa", // Key kept
+  itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi hộp.`, // Key kept, value updated
 };
