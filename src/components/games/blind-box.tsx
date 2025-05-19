@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Gift, Shuffle, ArrowDownAZ, Trash2, X, PackageOpen } from "lucide-react"; // Added PackageOpen
+import { Gift, Shuffle, ArrowDownAZ, Trash2, X, PackageOpen } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
@@ -22,6 +22,13 @@ export function BlindBox() {
   const [animationState, setAnimationState] = useState<'idle' | 'shaking' | 'opened'>('idle');
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
+
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error(`Error playing sound: ${soundPath}`, error);
+    });
+  };
 
   useEffect(() => {
     const parsedItems = itemsInput.split("\n").map(item => item.trim()).filter(item => item.length > 0);
@@ -60,6 +67,7 @@ export function BlindBox() {
       setSelectedItem(winner);
       setAnimationState('opened');
       setShowConfetti(true);
+      playSound('/sounds/applause.mp3');
       setTimeout(() => setShowConfetti(false), 7500);
       setIsOpening(false);
     }, 3000);

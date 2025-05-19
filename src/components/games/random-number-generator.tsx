@@ -17,11 +17,19 @@ export function RandomNumberGenerator() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
 
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error(`Error playing sound: ${soundPath}`, error);
+    });
+  };
+
   const handleGenerateNumber = () => {
     if (min >= max) {
       alert(translations.minMaxValidationAlert as string);
       return;
     }
+    playSound('/sounds/billiards.mp3');
     setIsGenerating(true);
     setRandomNumber(null); 
 
@@ -34,7 +42,11 @@ export function RandomNumberGenerator() {
   };
 
   useEffect(() => {
-    handleGenerateNumber();
+    // Generate initial number without sound on first load
+    if (min >= max) return;
+    const initialRandomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    setRandomNumber(initialRandomNumber);
+    setAnimationKey(prev => prev + 1);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

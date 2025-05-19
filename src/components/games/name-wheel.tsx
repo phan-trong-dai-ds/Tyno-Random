@@ -56,6 +56,12 @@ export function NameWheel() {
 
   const wheelRadiusForSegments = useMemo(() => WHEEL_SIZE / 2 - MARGIN_FROM_SVG_EDGE, []);
 
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error(`Error playing sound: ${soundPath}`, error);
+    });
+  };
 
   useEffect(() => {
     const parsedNames = namesInput.split("\n").map(name => name.trim()).filter(name => name.length > 0);
@@ -99,21 +105,15 @@ export function NameWheel() {
       const segmentId = `segment-${index}`;
 
       const visualMidAngleDeg = (startAngle + endAngle) / 2;
-      // midAngleRadCartesian is for Math.cos/sin, where 0 degrees is to the right.
-      // visualMidAngleDeg is 0 degrees at the top of the wheel, clockwise.
       const midAngleRadCartesian = (visualMidAngleDeg - 90) * Math.PI / 180;
 
-      // Position the start of the text near the outer edge of the segment.
-      const textPositionRadiusFactor = 0.8; // Text starts at 80% of the segment's radius from the center.
+      const textPositionRadiusFactor = 0.8; 
       const textX = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.cos(midAngleRadCartesian);
       const textY = WHEEL_SIZE / 2 + (wheelRadiusForSegments * textPositionRadiusFactor) * Math.sin(midAngleRadCartesian);
 
-      // Rotate text to be radial, with its baseline pointing towards the center of the wheel.
-      const textRotationAngle = visualMidAngleDeg + 90; // Text flows from (textX, textY) towards the center.
+      const textRotationAngle = visualMidAngleDeg + 90; 
 
       let displayName = name;
-      // Adjust character limit based on available radial space.
-      // Approx. length: wheelRadiusForSegments * (textPositionRadiusFactor - inner_margin_factor)
       let charDisplayLimit = 7;
       if (numNames >= 16) charDisplayLimit = 3;
       else if (numNames >= 10) charDisplayLimit = 4;
@@ -136,12 +136,12 @@ export function NameWheel() {
         endAngle,
         pathD: calculateSegmentPath(WHEEL_SIZE / 2, WHEEL_SIZE / 2, wheelRadiusForSegments, startAngle, endAngle),
         fillColor: WHEEL_COLORS[index % WHEEL_COLORS.length],
-        textColor: "hsl(0 0% 0%)", // Always black text
+        textColor: "hsl(0 0% 0%)", 
         textX,
         textY,
         textTransform: `rotate(${textRotationAngle} ${textX} ${textY})`,
-        textAnchor: "start", // Text starts at (textX, textY) and flows along its rotated baseline
-        dominantBaseline: "middle", // Vertically center text on its baseline
+        textAnchor: "start", 
+        dominantBaseline: "middle", 
       };
     });
   }, [namesList, wheelRadiusForSegments]);
@@ -155,6 +155,7 @@ export function NameWheel() {
       });
       return;
     }
+    playSound('/sounds/wheel-spin.mp3');
     setIsSpinning(true);
     setSelectedName(null);
     setShowConfetti(false);
@@ -168,14 +169,8 @@ export function NameWheel() {
     setTimeout(() => {
       setIsSpinning(false);
       const finalAngle = targetRotation % 360;
-      // The pointer is at 270 degrees (left side). We need to find which segment aligns with it.
-      // Angle of winning segment's *center* relative to pointer:
-      // If pointer is at visual 270deg (left side), then segment whose mid-point is at 270deg relative to current rotation is winner.
-      // Normalized angle: (pointer_visual_angle - finalAngle_visual + 360) % 360
-      // Our pointer points from left (visual 270 deg) towards center.
-      const pointerVisualAngle = 270; // Pointer is on the left, visually at 270 degrees
+      const pointerVisualAngle = 270; 
       const normalizedAngle = (pointerVisualAngle - finalAngle + 360) % 360;
-
 
       const anglePerSegment = 360 / namesList.length;
       const winnerIndex = Math.floor(normalizedAngle / anglePerSegment);
@@ -183,6 +178,7 @@ export function NameWheel() {
       const winner = namesList[winnerIndex % namesList.length];
       setSelectedName(winner);
       setShowConfetti(true);
+      playSound('/sounds/applause.mp3');
       setTimeout(() => setShowConfetti(false), 7500);
     }, 5000);
   }, [namesList, wheelRotation, toast, translations]);
@@ -210,10 +206,9 @@ export function NameWheel() {
     ? translations.namesEnteredSuffix(namesList.length)
     : `${namesList.length} ${translations.namesEnteredSuffix}`;
   
-  // Pointer is on the left side, pointing inwards
-  const pointerTipX = MARGIN_FROM_SVG_EDGE; // Tip of the pointer near the edge
-  const pointerTipY = WHEEL_SIZE / 2; // Vertically centered
-  const pointerBaseX1 = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT; // Base further left
+  const pointerTipX = MARGIN_FROM_SVG_EDGE; 
+  const pointerTipY = WHEEL_SIZE / 2; 
+  const pointerBaseX1 = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT; 
   const pointerBaseY1 = pointerTipY - POINTER_WIDTH / 2;
   const pointerBaseX2 = MARGIN_FROM_SVG_EDGE - POINTER_HEIGHT;
   const pointerBaseY2 = pointerTipY + POINTER_WIDTH / 2;
@@ -276,7 +271,6 @@ export function NameWheel() {
                 </g>
               ))}
             </g>
-            {/* Static pointer on the left */}
             <polygon
                 points={pointerPoints}
                 fill="hsl(var(--accent))"

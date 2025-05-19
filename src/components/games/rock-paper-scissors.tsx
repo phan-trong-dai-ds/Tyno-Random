@@ -35,6 +35,13 @@ export function RockPaperScissors() {
   const [winner, setWinner] = useState<'player1' | 'player2' | 'draw' | null>(null);
   const [isChoosing, setIsChoosing] = useState(false);
 
+  const playSound = (soundPath: string) => {
+    const audio = new Audio(soundPath);
+    audio.play().catch(error => {
+      console.error(`Error playing sound: ${soundPath}`, error);
+    });
+  };
+
   const getRandomChoice = (): Choice => {
     return choices[Math.floor(Math.random() * choices.length)];
   };
@@ -56,6 +63,9 @@ export function RockPaperScissors() {
       setIsChoosing(false);
       const result = determineWinner(player1.choice, player2.choice);
       setWinner(result);
+      if (result !== 'draw') {
+        playSound('/sounds/applause.mp3');
+      }
     } else if (player1.revealed || player2.revealed) {
         setIsChoosing(true);
     }
@@ -72,7 +82,7 @@ export function RockPaperScissors() {
 
   const handlePlayAgain = () => {
     setPlayer1(initialPlayerState);
-    setPlayer2(prev => ({ ...initialPlayerState, animationKey: prev.animationKey +1 })); // Ensure different keys for player2 as well
+    setPlayer2(prev => ({ ...initialPlayerState, animationKey: prev.animationKey +1 })); 
     setWinner(null);
     setIsChoosing(false);
   };
