@@ -11,7 +11,7 @@ export const vi: LocaleStrings = {
   randomNumber: "Số ngẫu nhiên",
   nameWheel: "Vòng quay tên",
   rockPaperScissors: "Oẳn Tù Tì",
-  blindBox: "Xé túi mù", // Changed from "Mở hộp mù"
+  blindBox: "Xé túi mù", // Ensures this is "Xé túi mù"
   viewSource: "Xem mã nguồn",
   toggleSidebar: "Chuyển đổi thanh bên",
   switchToEnglish: "Switch to English",
@@ -29,7 +29,7 @@ export const vi: LocaleStrings = {
   randomNumber_home_description: "Chọn một con số bất kỳ! Xác định phạm vi của bạn và để số phận quyết định.",
   nameWheel_home_description: "Quay vòng quay để chọn ngẫu nhiên một tên hoặc một món đồ từ danh sách của bạn. Hoàn hảo cho các chương trình tặng quà!",
   rockPaperScissors_home_description: "Trò chơi lựa chọn cổ điển. Búa, Bao, hay Kéo - ai sẽ giành chiến thắng?",
-  blindBox_home_description: "Chọn một điều bất ngờ! Nhập các món đồ và rút ngẫu nhiên một món từ trong túi. Bạn sẽ nhận được gì?", // Changed "hộp" to "túi"
+  blindBox_home_description: "Chọn một điều bất ngờ! Nhập các món đồ và rút ngẫu nhiên một món từ trong túi. Bạn sẽ nhận được gì?",
   playNow: "Chơi ngay",
 
   // Coin Flipper Page & Component
@@ -103,22 +103,20 @@ export const vi: LocaleStrings = {
   beatsText: "thắng",
 
   // Blind Box Page & Component (Now "Xé túi mù" in Vietnamese)
-  blindBox_page_title: "Xé túi mù", // Changed from "Mở hộp mù"
-  blindBox_page_description: "Giống như trò rút thăm may mắn! Thêm các vật phẩm vào túi và xem bạn rút được gì. Bất ngờ nào đang chờ đợi?", // Changed "hộp" to "túi"
+  blindBox_page_title: "Xé túi mù",
+  blindBox_page_description: "Giống như trò rút thăm may mắn! Thêm các vật phẩm vào túi và xem bạn rút được gì. Bất ngờ nào đang chờ đợi?",
   enterItemsLabel: "Nhập tên (mỗi tên một dòng)",
   shuffleItemsButtonLabel: "Trộn vật phẩm",
   sortItemsButtonLabel: "Sắp xếp vật phẩm",
   itemsPlaceholder: "Kẹo\nĐồ chơi\nPhiếu giảm giá...",
   itemsEnteredSuffix: (count: number) => `${count} vật phẩm đã nhập.`,
-  addItemsPrompt: "Thêm vật phẩm vào túi!", // Changed "hộp" to "túi"
-  openBoxButton: "Xé túi", // Changed from "Mở hộp"
-  openingBoxButton: "Đang xé...", // Changed from "Đang mở..."
-  noItemsToOpenErrorTitle: "Không có gì trong túi!", // Changed "hộp" to "túi"
-  noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào túi trước.", // Changed "hộp" to "túi"
+  addItemsPrompt: "Thêm vật phẩm vào túi!",
+  openBoxButton: "Xé túi",
+  openingBoxButton: "Đang xé...",
+  noItemsToOpenErrorTitle: "Không có gì trong túi!",
+  noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào túi trước.",
   itemDrawnAlertTitle: "Bạn đã rút được:",
   removeItemButton: "Xóa vật phẩm",
   itemRemovedToastTitle: "Vật phẩm đã được xóa",
-  itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`, // Changed "hộp" to "túi"
+  itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`,
 };
-
-    
