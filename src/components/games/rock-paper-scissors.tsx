@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
-import { Confetti } from '@/components/effects/confetti'; // Import Confetti
+import { useSound } from '@/context/sound-context';
+import { Confetti } from '@/components/effects/confetti';
 
 type Choice = 'rock' | 'paper' | 'scissors';
 interface PlayerState {
@@ -35,13 +36,16 @@ export function RockPaperScissors() {
   const [player2, setPlayer2] = useState<PlayerState>(initialPlayerState);
   const [winner, setWinner] = useState<'player1' | 'player2' | 'draw' | null>(null);
   const [isChoosing, setIsChoosing] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false); // State for confetti
+  const [showConfetti, setShowConfetti] = useState(false);
+  const { isSoundEnabled } = useSound();
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error(`Error playing sound: ${soundPath}`, error);
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error(`Error playing sound: ${soundPath}`, error);
+      });
+    }
   };
 
   const getRandomChoice = (): Choice => {
@@ -67,13 +71,13 @@ export function RockPaperScissors() {
       setWinner(result);
       if (result !== 'draw') {
         playSound('/sounds/applause.mp3');
-        setShowConfetti(true); // Show confetti on win
-        setTimeout(() => setShowConfetti(false), 7500); // Hide confetti after duration
+        setShowConfetti(true); 
+        setTimeout(() => setShowConfetti(false), 7500); 
       }
     } else if (player1.revealed || player2.revealed) {
         setIsChoosing(true);
     }
-  }, [player1, player2, determineWinner]);
+  }, [player1, player2, determineWinner, playSound]);
 
   const handlePlayerChoice = (player: 'player1' | 'player2') => {
     const randomChoice = getRandomChoice();
@@ -89,7 +93,7 @@ export function RockPaperScissors() {
     setPlayer2(prev => ({ ...initialPlayerState, animationKey: prev.animationKey +1 })); 
     setWinner(null);
     setIsChoosing(false);
-    setShowConfetti(false); // Reset confetti
+    setShowConfetti(false); 
   };
 
   const getChoiceText = (choice: Choice | null): string => {
@@ -109,7 +113,7 @@ export function RockPaperScissors() {
 
   return (
     <div className="space-y-6">
-      {showConfetti && <Confetti />} {/* Render Confetti */}
+      {showConfetti && <Confetti />} 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Player 1 Card */}
         <Card className="text-center">

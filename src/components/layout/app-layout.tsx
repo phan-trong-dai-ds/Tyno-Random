@@ -21,6 +21,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useLanguage } from "@/context/language-context";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
+import { SoundToggle } from "./sound-toggle";
 import { motion, AnimatePresence } from 'framer-motion';
 
 export function AppLayout({ children }: { children: ReactNode }) {
@@ -34,7 +35,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
     { href: "/random-number", label: translations.randomNumber as string, icon: Hash },
     { href: "/name-wheel", label: translations.nameWheel as string, icon: Disc3 },
     { href: "/rock-paper-scissors", label: translations.rockPaperScissors as string, icon: Swords },
-    { href: "/blind-box", label: translations.blindBox as string, icon: Gift }, // Changed from blind-bag and translations.blindBag
+    { href: "/blind-box", label: translations.blindBox as string, icon: Gift },
   ];
 
   return (
@@ -83,6 +84,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           {/* Right section of header */}
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <SoundToggle />
             <LanguageSwitcher />
           </div>
         </header>

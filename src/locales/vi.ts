@@ -20,6 +20,8 @@ export const vi: LocaleStrings = {
   toggleTheme: "Chuyển đổi giao diện",
   switchToDarkMode: "Chuyển sang giao diện tối",
   switchToLightMode: "Chuyển sang giao diện sáng",
+  muteSound: "Tắt âm thanh",
+  unmuteSound: "Mở âm thanh",
 
   // HomePage
   welcomeMessage: "Chào mừng đến với",
@@ -117,7 +119,7 @@ export const vi: LocaleStrings = {
   noItemsToOpenErrorDescription: "Vui lòng thêm vật phẩm vào túi trước.",
   itemDrawnAlertTitle: "Chúc mừng bạn đã xé trúng:",
   removeItemButton: "Xóa",
+  // closeWinnerAlertButton: "Đóng", // Already defined from Name Wheel
   itemRemovedToastTitle: "Vật phẩm đã được xóa",
   itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`,
 };
-

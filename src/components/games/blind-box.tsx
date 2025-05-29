@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
 import { useLanguage } from "@/context/language-context";
+import { useSound } from "@/context/sound-context";
 import { cn } from "@/lib/utils";
 
 export function BlindBox() {
@@ -22,12 +23,15 @@ export function BlindBox() {
   const [animationState, setAnimationState] = useState<'idle' | 'shaking' | 'opened'>('idle');
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
+  const { isSoundEnabled } = useSound();
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error(`Error playing sound: ${soundPath}`, error);
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error(`Error playing sound: ${soundPath}`, error);
+      });
+    }
   };
 
   useEffect(() => {
@@ -71,7 +75,7 @@ export function BlindBox() {
       setTimeout(() => setShowConfetti(false), 7500);
       setIsOpening(false);
     }, 3000);
-  }, [itemsList, toast, translations]);
+  }, [itemsList, toast, translations, playSound]);
 
   const handleRemoveItem = () => {
     if (!selectedItem) return;

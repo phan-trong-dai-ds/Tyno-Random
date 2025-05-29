@@ -24,6 +24,8 @@ export const en = {
   toggleTheme: "Toggle theme",
   switchToDarkMode: "Switch to dark mode",
   switchToLightMode: "Switch to light mode",
+  muteSound: "Mute sound",
+  unmuteSound: "Unmute sound",
 
   // HomePage
   welcomeMessage: "Welcome to",
@@ -121,12 +123,10 @@ export const en = {
   noItemsToOpenErrorDescription: "Please add some items to the box first.",
   itemDrawnAlertTitle: "Congratulations! You got:",
   removeItemButton: "Remove",
-  closeWinnerAlertButton: "Close", // Added this key as it was used in blind-box.tsx but not defined.
+  // closeWinnerAlertButton: "Close", // Already defined from Name Wheel, should be fine
   itemRemovedToastTitle: "Item Removed",
   itemRemovedToastDescription: (name: string) => `${name} has been removed from the box.`,
 };
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered
 export type ActualLocaleStrings = typeof en;
-
-    

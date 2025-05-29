@@ -11,6 +11,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { Confetti } from "@/components/effects/confetti";
 import { useLanguage } from "@/context/language-context";
+import { useSound } from "@/context/sound-context";
 
 
 const WHEEL_SIZE = 320;
@@ -53,14 +54,17 @@ export function NameWheel() {
   const [wheelRotation, setWheelRotation] = useState(0);
   const { toast } = useToast();
   const [showConfetti, setShowConfetti] = useState(false);
+  const { isSoundEnabled } = useSound();
 
   const wheelRadiusForSegments = useMemo(() => WHEEL_SIZE / 2 - MARGIN_FROM_SVG_EDGE, []);
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error(`Error playing sound: ${soundPath}`, error);
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error(`Error playing sound: ${soundPath}`, error);
+      });
+    }
   };
 
   useEffect(() => {
@@ -181,7 +185,7 @@ export function NameWheel() {
       playSound('/sounds/applause.mp3');
       setTimeout(() => setShowConfetti(false), 7500);
     }, 5000);
-  }, [namesList, wheelRotation, toast, translations]);
+  }, [namesList, wheelRotation, toast, translations, playSound]);
 
   const handleRemoveWinner = () => {
     if (!selectedName) return;
@@ -317,4 +321,3 @@ export function NameWheel() {
     </div>
   );
 }
-
