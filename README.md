@@ -8,11 +8,8 @@ Tại website này của mình sẽ có nhưng công cụ cơ bản như tạo s
 <br>
 
 **⚙️ Kỹ thuật phát triển:**
-<br>
 - ReactJS, NextJS
-<br>
 - Material 3
-<br>
 - Lucide (icon ReactJS)
 <br>
 <br>
@@ -79,7 +76,7 @@ Giao diện xé túi (hộp) mù
 <br>
 **ℹ️ Mọi thông tin chi tiết liên hệ mình qua email: ds.phantrongdai@gmail.com**
 <br>
---------------------------
+<p>--------------------------</p>
 <br>
 **💁🏻‍♂️ About:**
 <br>
@@ -89,11 +86,8 @@ On this site, you'll find essential tools like random number and name wheel. It 
 <br>
 
 **⚙️ Technology Development:**
-<br>
 - ReactJS, NextJS
-<br>
 - Material 3
-<br>
 - Lucide (icon ReactJS)
 <br>
 <br>
