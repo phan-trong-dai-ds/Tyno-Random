@@ -5,6 +5,7 @@ import "./globals.css";
 import { AppLayout } from "@/components/layout/app-layout";
 import { LanguageProvider } from "@/context/language-context";
 import { ThemeProvider } from "next-themes";
+import { SoundProvider } from "@/context/sound-context";
 
 const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["vietnamese", "latin"],
@@ -33,12 +34,13 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <LanguageProvider>
-            <AppLayout>{children}</AppLayout>
-          </LanguageProvider>
+          <SoundProvider>
+            <LanguageProvider>
+              <AppLayout>{children}</AppLayout>
+            </LanguageProvider>
+          </SoundProvider>
         </ThemeProvider>
       </body>
     </html>
   );
 }
-

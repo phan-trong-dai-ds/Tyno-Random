@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dices, Dice2, Dice3, Dice4, Dice5, Dice6 } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { useSound } from "@/context/sound-context";
 import { CustomDice1Icon } from "@/components/icons/custom-dice1-icon";
 
 const DiceIcon = ({ value }: { value: number }) => {
@@ -33,13 +34,15 @@ export function DiceRoller() {
   const [results, setResults] = useState<DiceResult[]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
+  const { isSoundEnabled } = useSound();
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error("Error playing sound:", error);
-      // Potentially inform user if sound file is missing or there's an issue
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error("Error playing sound:", error);
+      });
+    }
   };
 
   const handleRollDice = () => {
@@ -65,7 +68,7 @@ export function DiceRoller() {
         setResults(newResults);
         setAnimationKeys(newAnimationKeys);
         setIsRolling(false);
-    }, 100); // Short delay to allow sound to start
+    }, 100); 
   };
   
   useEffect(() => {

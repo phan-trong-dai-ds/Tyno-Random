@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Hash } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { useSound } from "@/context/sound-context";
 
 export function RandomNumberGenerator() {
   const { translations } = useLanguage();
@@ -16,12 +17,15 @@ export function RandomNumberGenerator() {
   const [randomNumber, setRandomNumber] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
+  const { isSoundEnabled } = useSound();
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error(`Error playing sound: ${soundPath}`, error);
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error(`Error playing sound: ${soundPath}`, error);
+      });
+    }
   };
 
   const handleGenerateNumber = () => {
@@ -42,7 +46,6 @@ export function RandomNumberGenerator() {
   };
 
   useEffect(() => {
-    // Generate initial number without sound on first load
     if (min >= max) return;
     const initialRandomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
     setRandomNumber(initialRandomNumber);

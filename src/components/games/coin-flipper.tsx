@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Coins } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
+import { useSound } from "@/context/sound-context";
 import { HeadsCoinIcon } from "@/components/icons/heads-coin-icon";
 import { TailsCoinIcon } from "@/components/icons/tails-coin-icon";
 
@@ -21,14 +22,15 @@ export function CoinFlipper() {
   const [results, setResults] = useState<CoinResult[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
+  const { isSoundEnabled } = useSound();
 
   const playSound = (soundPath: string) => {
-    const audio = new Audio(soundPath);
-    audio.play().catch(error => {
-      console.error("Error playing sound:", error);
-      // You could inform the user here if the sound file is missing or there's an issue.
-      // For example, using a toast notification.
-    });
+    if (isSoundEnabled) {
+      const audio = new Audio(soundPath);
+      audio.play().catch(error => {
+        console.error("Error playing sound:", error);
+      });
+    }
   };
 
   const handleFlipCoins = () => {
@@ -54,7 +56,7 @@ export function CoinFlipper() {
         setResults(newResults);
         setAnimationKeys(newAnimationKeys);
         setIsFlipping(false);
-    }, 100); // Short delay to allow sound to start, can be adjusted
+    }, 100); 
   };
 
   useEffect(() => {
