@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  output: 'export',
   images: {
     remotePatterns: [
       {
@@ -15,9 +16,11 @@ const nextConfig: NextConfig = {
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
+        // unoptimized: true,
       },
     ],
   },
+  basePath: '/Tyno-Random',
 };
 
 export default nextConfig;
