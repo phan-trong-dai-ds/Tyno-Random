@@ -13,7 +13,7 @@ export const en = {
   coinFlipper: "Coin Flipper",
   diceRoller: "Dice Roller",
   randomNumber: "Random Number",
-  nameWheel: "Name Wheel",
+  nameWheel: "Wheel of Name",
   rockPaperScissors: "Rock Paper Scissors",
   blindBox: "Blind Box",
   viewSource: "View Source",
@@ -71,7 +71,7 @@ export const en = {
   minMaxValidationAlert: "Minimum value must be less than maximum value.",
 
   // Name Wheel Page & Component
-  nameWheel_page_title: "Name Wheel",
+  nameWheel_page_title: "Wheel of Name",
   nameWheel_page_description: "Enter a list of names or items, then spin the wheel to randomly select one. Perfect for making choices, giveaways, or classroom activities!",
   enterNamesLabel: "Enter Names (one per line)",
   shuffleNamesButtonLabel: "Shuffle names",
@@ -88,6 +88,11 @@ export const en = {
   closeWinnerAlertButton: "Close",
   winnerRemovedToastTitle: "Winner Removed",
   winnerRemovedToastDescription: (name: string) => `${name} has been removed from the list.`,
+  addWheelButton: "Add Wheel",
+  spinSelectedButton: "Spin Selected",
+  spinAllButton: "Spin All",
+  wheelNameLabel: (index: number) => `Wheel ${index}`,
+  resultsListTitle: "Results List",
 
   // Rock Paper Scissors Page & Component
   rockPaperScissors_page_title: "Rock Paper Scissors",
@@ -126,6 +131,32 @@ export const en = {
   // closeWinnerAlertButton: "Close", // Already defined from Name Wheel, should be fine
   itemRemovedToastTitle: "Item Removed",
   itemRemovedToastDescription: (name: string) => `${name} has been removed from the box.`,
+
+  // Group Divider Page & Component
+  groupDivider: "Group Divider",
+  groupDivider_home_description: "Divide a list of members into random groups by specifying the number of teams or members per team.",
+  groupDivider_page_title: "Group Divider",
+  groupDivider_page_description: "Enter a list of members and distribute them into random groups based on the number of teams or members per team.",
+  divideModeLabel: "Division Mode",
+  divideByTeams: "By teams",
+  divideByMembers: "By members",
+  teamCountLabel: "Number of teams",
+  memberCountLabel: "Members per team",
+  divideButton: "Divide Groups",
+  dividingButton: "Dividing...",
+  optionRandomLeader: "Assign random leader (⭐)",
+  optionRandomCoLeader: "Assign random co-leader (✨)",
+  optionRandomCoLeaderNote: "(requires a leader)",
+  leaderLabel: "Leader",
+  coLeaderLabel: "Co-leader",
+  groupNameLabel: (index: number) => `Group ${index}`,
+  noNamesToDivideErrorTitle: "No members to divide!",
+  noNamesToDivideErrorDescription: "Please enter a list of members first.",
+  invalidInputErrorTitle: "Input Error",
+  invalidInputErrorDescription: "Please enter a value greater than or equal to 1.",
+  readyToDivideTitle: "Ready to Divide",
+  readyToDivideDescription: "Add members, choose a dividing mode, and click the Divide button to see the random groups.",
+  clearListButton: "Clear",
 };
 
 // Infer LocaleStrings from the 'en' object to ensure all keys are covered

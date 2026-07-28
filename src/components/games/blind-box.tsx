@@ -23,16 +23,7 @@ export function BlindBox() {
   const [animationState, setAnimationState] = useState<'idle' | 'shaking' | 'opened'>('idle');
   const [showConfetti, setShowConfetti] = useState(false);
   const { toast } = useToast();
-  const { isSoundEnabled } = useSound();
-
-  const playSound = (soundPath: string) => {
-    if (isSoundEnabled) {
-      const audio = new Audio(soundPath);
-      audio.play().catch(error => {
-        console.error(`Error playing sound: ${soundPath}`, error);
-      });
-    }
-  };
+  const { playSound } = useSound();
 
   useEffect(() => {
     const parsedItems = itemsInput.split("\n").map(item => item.trim()).filter(item => item.length > 0);
@@ -49,6 +40,13 @@ export function BlindBox() {
       a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
     );
     setItemsInput(sorted.join("\n"));
+  };
+
+  const handleClearItems = () => {
+    setItemsInput("");
+    setSelectedItem(null);
+    setAnimationState("idle");
+    setShowConfetti(false);
   };
 
   const handleOpenBox = useCallback(() => {
@@ -109,11 +107,14 @@ export function BlindBox() {
         <div className="flex justify-between items-center mb-1">
           <Label htmlFor="itemsInput" className="text-sm font-medium">{translations.enterItemsLabel as string}</Label>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleShuffleItems} disabled={isOpening || itemsList.length < 2} aria-label={translations.shuffleItemsButtonLabel as string}>
+            <Button variant="outline" size="sm" onClick={handleShuffleItems} disabled={isOpening || itemsList.length < 2} className="h-8 w-8 p-0" title={translations.shuffleItemsButtonLabel as string} aria-label={translations.shuffleItemsButtonLabel as string}>
               <Shuffle className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={handleSortItems} disabled={isOpening || itemsList.length < 2} aria-label={translations.sortItemsButtonLabel as string}>
+            <Button variant="outline" size="sm" onClick={handleSortItems} disabled={isOpening || itemsList.length < 2} className="h-8 w-8 p-0" title={translations.sortItemsButtonLabel as string} aria-label={translations.sortItemsButtonLabel as string}>
               <ArrowDownAZ className="h-4 w-4" />
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleClearItems} disabled={isOpening || itemsList.length === 0} className="h-8 w-8 p-0 text-destructive hover:bg-destructive/10" title={translations.clearListButton as string} aria-label={translations.clearListButton as string}>
+              <Trash2 className="h-4 w-4" />
             </Button>
           </div>
         </div>

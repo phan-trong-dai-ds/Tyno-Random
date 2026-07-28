@@ -6,6 +6,7 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 interface SoundContextType {
   isSoundEnabled: boolean;
   toggleSound: () => void;
+  playSound: (soundPath: string) => void;
 }
 
 const SoundContext = createContext<SoundContextType | undefined>(undefined);
@@ -30,8 +31,19 @@ export function SoundProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const playSound = useCallback((soundPath: string) => {
+    if (isSoundEnabled) {
+      const basePath = '';
+      const fullPath = `${basePath}${soundPath.startsWith('/') ? '' : '/'}${soundPath}`;
+      const audio = new Audio(fullPath);
+      audio.play().catch(error => {
+        console.error(`Error playing sound: ${fullPath}`, error);
+      });
+    }
+  }, [isSoundEnabled]);
+
   return (
-    <SoundContext.Provider value={{ isSoundEnabled, toggleSound }}>
+    <SoundContext.Provider value={{ isSoundEnabled, toggleSound, playSound }}>
       {children}
     </SoundContext.Provider>
   );

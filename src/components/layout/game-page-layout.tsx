@@ -7,9 +7,10 @@ interface GamePageLayoutProps {
   description: string;
   icon: ReactNode;
   children: ReactNode;
+  maxWidthClass?: string;
 }
 
-export function GamePageLayout({ title, description, icon, children }: GamePageLayoutProps) {
+export function GamePageLayout({ title, description, icon, children, maxWidthClass = "max-w-2xl" }: GamePageLayoutProps) {
   return (
     <div className="container mx-auto py-8 px-4 md:px-6">
       <header className="mb-8 text-center">
@@ -19,7 +20,7 @@ export function GamePageLayout({ title, description, icon, children }: GamePageL
         <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">{title}</h1>
         <p className="mt-2 text-md md:text-lg text-muted-foreground max-w-2xl mx-auto">{description}</p>
       </header>
-      <Card className="max-w-2xl mx-auto shadow-xl rounded-lg">
+      <Card className={`${maxWidthClass} mx-auto shadow-xl rounded-lg transition-all duration-350`}>
         <CardContent className="p-6 md:p-8">
           {children}
         </CardContent>

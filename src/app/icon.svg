@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" /> <!-- Indigo 600 -->
+      <stop offset="100%" stop-color="#7C3AED" /> <!-- Violet 600 -->
+    </linearGradient>
+    
+    <!-- Dice Face Gradient -->
+    <linearGradient id="diceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#E2E8F0" />
+    </linearGradient>
+    
+    <!-- Shadow Filter for depth -->
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)" />
+
+  <!-- Inner border light path (premium look) -->
+  <rect x="12" y="12" width="488" height="488" rx="116" fill="none" stroke="#FFFFFF" stroke-opacity="0.15" stroke-width="8" />
+
+  <!-- Glassy Glow/Overlay -->
+  <path d="M 0 128 C 0 57.3 57.3 0 128 0 L 384 0 C 454.7 0 512 57.3 512 128 C 512 100 420 80 256 80 C 92 80 0 100 0 128 Z" fill="#FFFFFF" opacity="0.08" />
+
+  <!-- The Dice Face -->
+  <g filter="url(#shadow)">
+    <!-- Main Dice Body -->
+    <rect x="112" y="112" width="288" height="288" rx="64" fill="url(#diceGrad)" />
+    <!-- Inner soft border of the dice face -->
+    <rect x="116" y="116" width="280" height="280" rx="60" fill="none" stroke="#FFFFFF" stroke-width="4" opacity="0.8" />
+  </g>
+
+  <!-- Dots (Dice 5 Pattern) -->
+  <!-- Center Dot -->
+  <circle cx="256" cy="256" r="28" fill="#4F46E5" />
+  
+  <!-- Top Left Dot -->
+  <circle cx="184" cy="184" r="28" fill="#4F46E5" />
+  
+  <!-- Bottom Right Dot -->
+  <circle cx="328" cy="328" r="28" fill="#4F46E5" />
+  
+  <!-- Top Right Dot -->
+  <circle cx="328" cy="184" r="28" fill="#4F46E5" />
+  
+  <!-- Bottom Left Dot -->
+  <circle cx="184" cy="328" r="28" fill="#4F46E5" />
+
+</svg>

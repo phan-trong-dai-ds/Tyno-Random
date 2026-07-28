@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Hash } from "lucide-react";
+import { Volleyball } from "lucide-react";
 import { useLanguage } from "@/context/language-context";
 import { useSound } from "@/context/sound-context";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function RandomNumberGenerator() {
   const { translations } = useLanguage();
@@ -17,15 +18,31 @@ export function RandomNumberGenerator() {
   const [randomNumber, setRandomNumber] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [animationKey, setAnimationKey] = useState(0);
-  const { isSoundEnabled } = useSound();
+  const [initialPos, setInitialPos] = useState({ x: 0, y: -300, rotate: -720, scale: 0.5, opacity: 0 });
+  const [ballColor, setBallColor] = useState("#3b82f6");
+  const { playSound } = useSound();
 
-  const playSound = (soundPath: string) => {
-    if (isSoundEnabled) {
-      const audio = new Audio(soundPath);
-      audio.play().catch(error => {
-        console.error(`Error playing sound: ${soundPath}`, error);
-      });
-    }
+  const colors = [
+    "#3b82f6", // blue
+    "#22c55e", // green
+    "#dc2626", // strong red
+    "#eab308", // yellow
+    "#ec4899", // pink
+    "#f97316", // orange
+  ];
+
+  const updateRandomDirectionAndColor = () => {
+    const directions = [
+      { x: -500, y: -500, rotate: -1080, scale: 0.2, opacity: 0 },
+      { x: 500, y: -500, rotate: 1080, scale: 0.2, opacity: 0 },
+      { x: -500, y: 500, rotate: -1080, scale: 0.2, opacity: 0 },
+      { x: 500, y: 500, rotate: 1080, scale: 0.2, opacity: 0 },
+      { x: -600, y: 0, rotate: -1080, scale: 0.2, opacity: 0 },
+      { x: 600, y: 0, rotate: 1080, scale: 0.2, opacity: 0 },
+      { x: 0, y: -600, rotate: -1080, scale: 0.2, opacity: 0 },
+    ];
+    setInitialPos(directions[Math.floor(Math.random() * directions.length)]);
+    setBallColor(colors[Math.floor(Math.random() * colors.length)]);
   };
 
   const handleGenerateNumber = () => {
@@ -39,6 +56,7 @@ export function RandomNumberGenerator() {
 
     setTimeout(() => {
       const newRandomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+      updateRandomDirectionAndColor();
       setRandomNumber(newRandomNumber);
       setAnimationKey(prev => prev + 1); 
       setIsGenerating(false);
@@ -48,6 +66,7 @@ export function RandomNumberGenerator() {
   useEffect(() => {
     if (min >= max) return;
     const initialRandomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    updateRandomDirectionAndColor();
     setRandomNumber(initialRandomNumber);
     setAnimationKey(prev => prev + 1);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,7 +82,9 @@ export function RandomNumberGenerator() {
             id="min"
             type="number"
             value={min}
-            onChange={(e) => setMin(parseInt(e.target.value) || 0)}
+            min="0"
+            max="1000"
+            onChange={(e) => setMin(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
             className="mt-1"
             disabled={isGenerating}
           />
@@ -74,26 +95,43 @@ export function RandomNumberGenerator() {
             id="max"
             type="number"
             value={max}
-            onChange={(e) => setMax(parseInt(e.target.value) || 0)}
+            min="0"
+            max="1000"
+            onChange={(e) => setMax(Math.max(0, Math.min(1000, parseInt(e.target.value) || 0)))}
             className="mt-1"
             disabled={isGenerating}
           />
         </div>
       </div>
       <Button onClick={handleGenerateNumber} disabled={isGenerating} className="w-full">
-        <Hash className="mr-2 h-5 w-5" />
+        <Volleyball className="mr-2 h-5 w-5" />
         {isGenerating ? translations.generatingButton as string : translations.generateNumberButton as string}
       </Button>
 
       {randomNumber !== null && (
-        <Card className="mt-6 text-center">
+        <Card className="mt-6 text-center overflow-hidden relative">
           <CardHeader>
             <CardTitle className="text-xl">{translations.generatedNumberTitle as string}</CardTitle>
           </CardHeader>
-          <CardContent>
-            <div key={animationKey} className="animate-pop-in text-6xl font-bold text-primary p-8">
-              {randomNumber}
-            </div>
+          <CardContent className="min-h-[200px] flex items-center justify-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={animationKey}
+                initial={initialPos}
+                animate={{ x: 0, y: 0, rotate: 0, scale: 1, opacity: 1 }}
+                exit={{ scale: 0, opacity: 0 }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="w-32 h-32 rounded-full flex items-center justify-center"
+                style={{
+                  boxShadow: 'inset -15px -15px 25px rgba(0,0,0,0.4), inset 10px 10px 25px rgba(255,255,255,0.4), 10px 10px 20px rgba(0,0,0,0.3)',
+                  background: `radial-gradient(circle at 35% 35%, ${ballColor}cc 0%, ${ballColor} 50%, ${ballColor}80 100%)`
+                }}
+              >
+                <span className="text-5xl font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.6)]">
+                  {randomNumber}
+                </span>
+              </motion.div>
+            </AnimatePresence>
           </CardContent>
         </Card>
       )}

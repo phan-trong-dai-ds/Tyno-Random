@@ -13,6 +13,7 @@ export default function NameWheelPage() {
       title={translations.nameWheel_page_title as string}
       description={translations.nameWheel_page_description as string}
       icon={<Disc3 className="w-10 h-10" />}
+      maxWidthClass="max-w-5xl"
     >
       <NameWheel />
     </GamePageLayout>

@@ -34,16 +34,7 @@ export function DiceRoller() {
   const [results, setResults] = useState<DiceResult[]>([]);
   const [isRolling, setIsRolling] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
-  const { isSoundEnabled } = useSound();
-
-  const playSound = (soundPath: string) => {
-    if (isSoundEnabled) {
-      const audio = new Audio(soundPath);
-      audio.play().catch(error => {
-        console.error("Error playing sound:", error);
-      });
-    }
-  };
+  const { playSound } = useSound();
 
   const handleRollDice = () => {
     if (numDice <= 0 || numDice > 20) {
@@ -108,11 +99,11 @@ export function DiceRoller() {
             <CardTitle className="text-xl">{translations.resultsTitle as string}</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
+            <div className="flex flex-wrap justify-center gap-4">
               {results.map((result, index) => (
                 <div
                   key={result.id + animationKeys[result.id]}
-                  className="animate-pop-in flex flex-col items-center justify-center p-3 border rounded-lg shadow-sm aspect-square bg-background"
+                  className="animate-pop-in flex flex-col items-center justify-center p-3 border rounded-lg shadow-sm w-20 sm:w-24 aspect-square bg-background"
                   style={{ animationDelay: `${index * 75}ms` }}
                 >
                   <DiceIcon value={result.value} />

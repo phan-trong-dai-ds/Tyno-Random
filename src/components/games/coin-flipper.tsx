@@ -22,16 +22,7 @@ export function CoinFlipper() {
   const [results, setResults] = useState<CoinResult[]>([]);
   const [isFlipping, setIsFlipping] = useState(false);
   const [animationKeys, setAnimationKeys] = useState<Record<string, number>>({});
-  const { isSoundEnabled } = useSound();
-
-  const playSound = (soundPath: string) => {
-    if (isSoundEnabled) {
-      const audio = new Audio(soundPath);
-      audio.play().catch(error => {
-        console.error("Error playing sound:", error);
-      });
-    }
-  };
+  const { playSound } = useSound();
 
   const handleFlipCoins = () => {
     if (numCoins <= 0 || numCoins > 20) {
@@ -93,8 +84,8 @@ export function CoinFlipper() {
 
       {results.length > 0 && (
         <div className="mt-6">
-          <h2 className="text-xl font-semibold mb-3 text-foreground">{translations.resultsTitle as string}</h2>
-          <div className="p-4 border rounded-lg shadow-sm bg-muted/30">
+          <div className="p-6 border rounded-xl shadow-sm bg-muted/30">
+            <h2 className="text-xl font-semibold mb-6 text-foreground text-left">{translations.resultsTitle as string}</h2>
             <div className="flex flex-wrap gap-4 justify-center">
               {results.map((result, index) => (
                 <div
@@ -115,10 +106,12 @@ export function CoinFlipper() {
                 </div>
               ))}
             </div>
+            <div className="flex justify-start mt-8">
+              <p className="text-sm font-medium text-muted-foreground">
+                {translations.totalHeads as string}: {results.filter(r => r.value === 'H').length} <span className="mx-2">•</span> {translations.totalTails as string}: {results.filter(r => r.value === 'T').length}
+              </p>
+            </div>
           </div>
-          <p className="mt-4 text-sm text-muted-foreground">
-            {translations.totalHeads as string}: {results.filter(r => r.value === 'H').length}, {translations.totalTails as string}: {results.filter(r => r.value === 'T').length}
-          </p>
         </div>
       )}
     </div>

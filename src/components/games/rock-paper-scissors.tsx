@@ -4,7 +4,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, RotateCcw } from 'lucide-react';
+import { User, RotateCcw } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 import { useSound } from '@/context/sound-context';
 import { Confetti } from '@/components/effects/confetti';
@@ -37,16 +37,7 @@ export function RockPaperScissors() {
   const [winner, setWinner] = useState<'player1' | 'player2' | 'draw' | null>(null);
   const [isChoosing, setIsChoosing] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const { isSoundEnabled } = useSound();
-
-  const playSound = (soundPath: string) => {
-    if (isSoundEnabled) {
-      const audio = new Audio(soundPath);
-      audio.play().catch(error => {
-        console.error(`Error playing sound: ${soundPath}`, error);
-      });
-    }
-  };
+  const { playSound } = useSound();
 
   const getRandomChoice = (): Choice => {
     return choices[Math.floor(Math.random() * choices.length)];
@@ -119,7 +110,7 @@ export function RockPaperScissors() {
         <Card className="text-center">
           <CardHeader>
             <CardTitle className="text-xl flex items-center justify-center">
-              <Users className="mr-2 h-6 w-6 text-primary" />
+              <User className="mr-2 h-6 w-6 text-primary" />
               {translations.player1 as string}
             </CardTitle>
           </CardHeader>
@@ -147,8 +138,8 @@ export function RockPaperScissors() {
         {/* Player 2 Card */}
         <Card className="text-center">
           <CardHeader>
-            <CardTitle className="text-xl flex items-center justify-center">
-              <Users className="mr-2 h-6 w-6 text-primary" />
+            <CardTitle className="text-xl flex items-center justify-center text-red-500">
+              <User className="mr-2 h-6 w-6 text-red-500" />
               {translations.player2 as string}
             </CardTitle>
           </CardHeader>
@@ -166,7 +157,7 @@ export function RockPaperScissors() {
             <Button
               onClick={() => handlePlayerChoice('player2')}
               disabled={player2.revealed || (player1.revealed && player2.revealed)}
-              className="w-full"
+              className="w-full bg-red-600 hover:bg-red-700 text-white"
             >
              {player2.revealed ? translations.chosenButton as string : (translations.chooseButtonPlayer as (player: string) => string)(translations.player2 as string) }
             </Button>
@@ -175,9 +166,19 @@ export function RockPaperScissors() {
       </div>
 
       {winner && (
-        <Card className="mt-6 text-center bg-primary/10 border-primary/50">
+        <Card className={`mt-6 text-center border ${
+          winner === 'player2' ? 'bg-red-500/10 border-red-500/50' : 
+          winner === 'draw' ? 'bg-green-500/10 border-green-500/50' : 
+          'bg-primary/10 border-primary/50'
+        }`}>
           <CardHeader>
-            <CardTitle className="text-2xl font-bold text-primary animate-pop-in">{getWinnerText()}</CardTitle>
+            <CardTitle className={`text-2xl font-bold animate-pop-in ${
+              winner === 'player2' ? 'text-red-500' : 
+              winner === 'draw' ? 'text-green-600 dark:text-green-500' : 
+              'text-primary'
+            }`}>
+              {getWinnerText()}
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
@@ -193,7 +194,7 @@ export function RockPaperScissors() {
       )}
       
       {(player1.revealed && player2.revealed && winner) && (
-         <Button onClick={handlePlayAgain} className="w-full mt-4">
+         <Button onClick={handlePlayAgain} className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white">
             <RotateCcw className="mr-2 h-5 w-5" />
             {translations.playAgainButton as string}
         </Button>

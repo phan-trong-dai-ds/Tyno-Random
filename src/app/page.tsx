@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Coins, Dices, Hash, Disc3, ArrowRight, Swords, Gift } from 'lucide-react';
+import { Coins, Dices, Volleyball, Disc3, ArrowRight, Swords, Gift, Users } from 'lucide-react';
 import { useLanguage } from '@/context/language-context';
 
 export default function HomePage() {
@@ -29,7 +29,7 @@ export default function HomePage() {
       title: translations.randomNumber as string,
       description: translations.randomNumber_home_description as string,
       href: '/random-number',
-      icon: Hash,
+      icon: Volleyball,
       dataAiHint: 'number abstract'
     },
     {
@@ -52,6 +52,13 @@ export default function HomePage() {
       href: '/blind-box', // Changed from /blind-bag
       icon: Gift,
       dataAiHint: 'gift box surprise'
+    },
+    {
+      title: translations.groupDivider as string,
+      description: translations.groupDivider_home_description as string,
+      href: '/group-divider',
+      icon: Users,
+      dataAiHint: 'team group division'
     },
   ];
 

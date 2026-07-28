@@ -8,7 +8,7 @@ export const vi: LocaleStrings = {
   home: "Trang chủ",
   coinFlipper: "Tung đồng xu",
   diceRoller: "Gieo xúc xắc",
-  randomNumber: "Số ngẫu nhiên",
+  randomNumber: "Lăn bi số",
   nameWheel: "Vòng quay tên",
   rockPaperScissors: "Oẳn Tù Tì",
   blindBox: "Xé túi mù",
@@ -57,8 +57,8 @@ export const vi: LocaleStrings = {
   numDiceValidationAlert: "Vui lòng nhập số lượng xúc xắc từ 1 đến 20.",
 
   // Random Number Page & Component
-  randomNumber_page_title: "Trình tạo số ngẫu nhiên",
-  randomNumber_page_description: "Cần một số ngẫu nhiên? Chỉ định giá trị tối thiểu và tối đa của bạn, và để chúng tôi chọn một số cho bạn. Đơn giản, nhanh chóng và không thiên vị.",
+  randomNumber_page_title: "Lăn bi số",
+  randomNumber_page_description: "Cần một số ngẫu nhiên? Chỉ định giá trị tối thiểu và tối đa của bạn, và để chúng tôi lăn bi chọn một số cho bạn. Đơn giản, nhanh chóng và không thiên vị.",
   minValLabel: "Giá trị nhỏ nhất",
   maxValLabel: "Giá trị lớn nhất",
   generateNumberButton: "Tạo số",
@@ -84,6 +84,11 @@ export const vi: LocaleStrings = {
   closeWinnerAlertButton: "Đóng",
   winnerRemovedToastTitle: "Đã xóa người thắng cuộc",
   winnerRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi danh sách.`,
+  addWheelButton: "Thêm mới",
+  spinSelectedButton: "Quay đã chọn",
+  spinAllButton: "Quay tất cả",
+  wheelNameLabel: (index: number) => `Vòng quay ${index}`,
+  resultsListTitle: "Danh sách kết quả",
 
   // Rock Paper Scissors Page & Component
   rockPaperScissors_page_title: "Oẳn Tù Tì",
@@ -122,4 +127,30 @@ export const vi: LocaleStrings = {
   // closeWinnerAlertButton: "Đóng", // Already defined from Name Wheel
   itemRemovedToastTitle: "Vật phẩm đã được xóa",
   itemRemovedToastDescription: (name: string) => `${name} đã được xóa khỏi túi.`,
+
+  // Group Divider Page & Component
+  groupDivider: "Chia nhóm",
+  groupDivider_home_description: "Chia danh sách thành viên thành các nhóm ngẫu nhiên bằng cách chia theo số nhóm hoặc số thành viên.",
+  groupDivider_page_title: "Chia nhóm",
+  groupDivider_page_description: "Nhập danh sách thành viên và phân chia họ vào các nhóm ngẫu nhiên theo số lượng đội hoặc số thành viên mỗi đội.",
+  divideModeLabel: "Chế độ chia nhóm",
+  divideByTeams: "Chia theo nhóm",
+  divideByMembers: "Chia theo thành viên",
+  teamCountLabel: "Số lượng đội",
+  memberCountLabel: "Số lượng thành viên mỗi đội",
+  divideButton: "Chia nhóm",
+  dividingButton: "Đang chia...",
+  optionRandomLeader: "Chọn đội trưởng ngẫu nhiên (⭐)",
+  optionRandomCoLeader: "Chọn đội phó ngẫu nhiên (✨)",
+  optionRandomCoLeaderNote: "(bắt buộc phải có đội trưởng)",
+  leaderLabel: "Đội trưởng",
+  coLeaderLabel: "Đội phó",
+  groupNameLabel: (index: number) => `Nhóm ${index}`,
+  noNamesToDivideErrorTitle: "Không có thành viên để chia!",
+  noNamesToDivideErrorDescription: "Vui lòng nhập danh sách thành viên trước.",
+  invalidInputErrorTitle: "Lỗi nhập liệu",
+  invalidInputErrorDescription: "Vui lòng nhập giá trị lớn hơn hoặc bằng 1.",
+  readyToDivideTitle: "Sẵn sàng chia nhóm",
+  readyToDivideDescription: "Thêm thành viên, chọn chế độ chia và nhấn nút Chia nhóm để xem kết quả.",
+  clearListButton: "Xóa",
 };
